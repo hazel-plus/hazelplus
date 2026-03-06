@@ -20,7 +20,7 @@ if (preg_match('#/uploads/([a-zA-Z0-9_\-\.]+)$#', $uri, $m)) {
 /**
  * Hazel+ — a single-file PHP social network
  *
- * I built this because I missed Google+. It's not perfect but it works,
+ * I built this because Google+ seemed so cool, I didnt really get to use it much sadly. It's not perfect but it works,
  * and now it's open source so you can make it better than I can.
  *
  * v2.0.0 — going open source!
@@ -37,20 +37,20 @@ define('DB_FILE',   __DIR__ . '/hazelplus.db');
 define('DB_HOST',   'localhost');
 define('DB_NAME',   'hazelplus');
 define('DB_USER',   'root');
-define('DB_PASS',   '');
+define('DB_PASS',   'databasepw');
 define('SITE_NAME', 'Hazel+');
 define('SITE_DESC', 'Share what matters. Connect for real.');
 define('ADMIN_EMAIL', 'admin@example.com');
-define('ADMIN_PASS',  'drayfrick');   // <-- PLEASE change this
+define('ADMIN_PASS',  'admin123');   // <-- PLEASE change this
 define('UPLOAD_DIR',  __DIR__ . '/uploads/');
 define('UPLOAD_URL',  '/uploads/');
 define('VERSION',     '2.0.0');
-define('GITHUB_URL',  'https://github.com/hazelplus/hazelplus');
+define('GITHUB_URL',  'https://github.com/hazel-plus/hazelplus');
 
 // legal stuff — edit these to match your actual site
 define('LEGAL_SITE_URL',  'https://example.com');
-define('LEGAL_CONTACT',   'hazelpluslegal@atomicmail.io');
-define('LEGAL_EFFECTIVE', 'January 1, 2025');
+define('LEGAL_CONTACT',   'legal@legal.com');
+define('LEGAL_EFFECTIVE', 'January 1, 202X');
 
 
 // --- legal page content ---
