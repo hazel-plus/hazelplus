@@ -2,7 +2,7 @@
 
 A revival of Google+, built in a single PHP file.
 
-I started this project because I genuinely missed Google+ and couldn't find anything that felt like it. Circles, Communities, +1s, Ripples — all of it. So I rebuilt it from scratch. It's not perfect but it works, and now it's open source so you can make it better than I can.
+I started this project because I genuinely liked Google+ and couldn't find anything that felt like it. Circles, Communities, +1s, Ripples — all of it. So I rebuilt it from scratch. It's not perfect but it works, and now it's open source so you can make it better than I can.
 
 ![PHP](https://img.shields.io/badge/PHP-7.4+-777BB4?logo=php&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green)
