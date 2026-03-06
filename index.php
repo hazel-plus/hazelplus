@@ -5,7 +5,7 @@ if (preg_match('#/uploads/([a-zA-Z0-9_\-\.]+)$#', $uri, $m)) {
     $file = basename($m[1]);
     $path = __DIR__ . '/uploads/' . $file;
     $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-    $mimes = ['jpg'image/jpeg','jpeg'=>'image/jpeg','png'=>'image/png','gif'=>'image/gif','webp'=>'image/webp'];
+    $mimes = ['jpg'=>'image/jpeg','jpeg'=>'image/jpeg','png'=>'image/png','gif'=>'image/gif','webp'=>'image/webp'];
 
     if (preg_match('/^[a-zA-Z0-9_\-\.]+$/', $file) && file_exists($path) && isset($mimes[$ext])) {
         header('Content-Type: ' . $mimes[$ext]);
