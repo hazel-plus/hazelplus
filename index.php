@@ -1,5 +1,6 @@
 <?php
 ob_start();
+
 // serve images from /uploads/ before anything else loads
 $uri = $_SERVER['REQUEST_URI'] ?? '';
 if (preg_match('#/uploads/([a-zA-Z0-9_\-\.]+)$#', $uri, $m)) {
@@ -21,12 +22,12 @@ if (preg_match('#/uploads/([a-zA-Z0-9_\-\.]+)$#', $uri, $m)) {
 /**
  * Hazel+ — a single-file PHP social network
  *
- * I built this because Google+ seemed so cool, I didnt really get to use it much sadly. It's not perfect but it works,
+ * I built this because I liked Google+ and i wished i used it more. It's not perfect but it works,
  * and now it's open source so you can make it better than I can.
  *
  * v2.0.0 — going open source!
  * License: MIT
- * GitHub: https://github.com/hazelplus/hazelplus
+ * GitHub: https://github.com/hazel-plus/hazelplus
  *
  * Needs PHP 7.4+ and either SQLite (default) or MySQL.
  */
@@ -38,7 +39,7 @@ define('DB_FILE',   __DIR__ . '/hazelplus.db');
 define('DB_HOST',   'localhost');
 define('DB_NAME',   'hazelplus');
 define('DB_USER',   'root');
-define('DB_PASS',   'databasepw');
+define('DB_PASS',   '');
 define('SITE_NAME', 'Hazel+');
 define('SITE_DESC', 'Share what matters. Connect for real.');
 define('ADMIN_EMAIL', 'admin@example.com');
@@ -46,12 +47,12 @@ define('ADMIN_PASS',  'admin123');   // <-- PLEASE change this
 define('UPLOAD_DIR',  __DIR__ . '/uploads/');
 define('UPLOAD_URL',  '/uploads/');
 define('VERSION',     '2.0.0');
-define('GITHUB_URL',  'https://github.com/hazel-plus/hazelplus');
+define('GITHUB_URL',  'https://github.com/hazelplus/hazelplus');
 
 // legal stuff — edit these to match your actual site
 define('LEGAL_SITE_URL',  'https://example.com');
 define('LEGAL_CONTACT',   'legal@legal.com');
-define('LEGAL_EFFECTIVE', 'January 1, 202X');
+define('LEGAL_EFFECTIVE', 'January 1, 2025');
 
 
 // --- legal page content ---
@@ -2467,6 +2468,170 @@ elseif ($page === 'home'):
   </div></div>
 </div>
 </div>
+<?php
+elseif ($page === 'explore'):
+  $stmt = getDB()->prepare("SELECT p.*,u.display_name,u.username,u.avatar,u.role,u.early_access,(SELECT COUNT(*) FROM plusones WHERE post_id=p.id) AS po_count,(SELECT COUNT(*) FROM comments WHERE post_id=p.id) AS cm_count,(SELECT COUNT(*) FROM plusones WHERE post_id=p.id AND user_id=?) AS user_po FROM posts p JOIN users u ON u.id=p.user_id WHERE p.visibility='public' AND p.community_id IS NULL ORDER BY p.created_at DESC LIMIT 60");
+  $stmt->execute([$u ? $u['id'] : 0]);
+  $posts = $stmt->fetchAll();
+?>
+<div id="wrap"><div id="stream" style="max-width:620px;margin:0 auto">
+  <div class="page-head"><h2>&#127760; Public Stream</h2></div>
+  <?php foreach ($posts as $post): ?>
+  <div class="gcard">
+    <div class="post-head">
+      <a href="?page=profile&id=<?= $post['user_id'] ?>"><img src="<?= avatarSrc($post['avatar'], $post['display_name']) ?>" class="post-av"></a>
+      <div class="post-meta">
+        <div class="post-author"><a href="?page=profile&id=<?= $post['user_id'] ?>"><?= h($post['display_name']) ?></a><?= userBadges($post) ?></div>
+        <div class="post-time"><?= timeAgo($post['created_at']) ?></div>
+      </div>
+    </div>
+    <?php if ($post['content']): ?><div class="post-body"><?= h($post['content']) ?></div><?php endif; ?>
+    <?php if ($post['image']): ?><img src="<?= h($post['image']) ?>" class="post-img"><?php endif; ?>
+    <div class="post-bar">
+      <?php if ($u): ?>
+      <button class="pbar-btn <?= $post['user_po'] ? 'plusoned' : '' ?>" onclick="plusOne(<?= $post['id'] ?>,this)"><svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>+1 <span class="poc"><?= $post['po_count'] ?></span></button>
+      <?php else: ?>
+      <span style="font-size:13px;color:var(--sub);padding:8px 10px"><?= $post['po_count'] ?> +1s</span>
+      <a href="?page=login" class="gbtn gbtn-outline gbtn-sm" style="margin-left:auto">Sign in</a>
+      <?php endif; ?>
+    </div>
+  </div>
+  <?php endforeach; ?>
+  <?php if (empty($posts)): ?><div class="gcard empty-state"><p>No public posts yet.</p></div><?php endif; ?>
+</div></div>
+
+<?php elseif ($page === 'profile'):
+  $pid   = isset($_GET['id']) ? (int)$_GET['id'] : ($u ? $u['id'] : 0);
+  $puser = $pid ? getDB()->query("SELECT * FROM users WHERE id=$pid")->fetch() : null;
+  if (!$puser) { echo '<div class="gcard" style="margin:32px auto;max-width:600px;padding:24px"><p>User not found.</p></div>'; }
+  else {
+    $isOwn          = $u && $u['id'] == $puser['id'];
+    $isFollowing    = $u ? (bool)getDB()->query("SELECT 1 FROM follows WHERE follower_id={$u['id']} AND following_id={$puser['id']}")->fetch() : false;
+    $followerCount  = getDB()->query("SELECT COUNT(*) FROM follows WHERE following_id={$puser['id']}")->fetchColumn();
+    $followingCount = getDB()->query("SELECT COUNT(*) FROM follows WHERE follower_id={$puser['id']}")->fetchColumn();
+    $postCount      = getDB()->query("SELECT COUNT(*) FROM posts WHERE user_id={$puser['id']}")->fetchColumn();
+    $userPoSql      = $u ? ",EXISTS(SELECT 1 FROM plusones WHERE post_id=p.id AND user_id={$u['id']}) user_po" : ",0 user_po";
+    $profilePosts   = getDB()->query("SELECT p.*,u.display_name,u.avatar,u.role,u.early_access,u.suspended,(SELECT COUNT(*) FROM plusones WHERE post_id=p.id) po_count{$userPoSql} FROM posts p JOIN users u ON p.user_id=u.id WHERE p.user_id={$puser['id']} AND p.community_id IS NULL ORDER BY p.created_at DESC LIMIT 30")->fetchAll();
+    $pSuspended     = isUserSuspended($puser);
+?>
+<div id="wrap" style="max-width:700px;margin:0 auto">
+  <?php if ($pSuspended && ($isOwn || ($u && $u['role']==='admin'))): ?>
+  <div style="background:#fce8e6;border:1px solid #dd4b39;border-radius:3px;padding:10px 14px;margin-bottom:14px;font-size:13px;color:#c5221f">
+    &#9888; <?= $isOwn ? 'Your account is currently suspended.' : 'This account is suspended.' ?>
+  </div>
+  <?php endif; ?>
+  <div class="gcard profile-card">
+    <div class="profile-cover" <?= $puser['cover'] ? 'style="background-image:url('.h($puser['cover']).');background-size:cover;background-position:center"' : '' ?>></div>
+    <div class="profile-av-wrap"><img src="<?= avatarSrc($puser['avatar'], $puser['display_name']) ?>" class="profile-av"></div>
+    <div class="profile-info">
+      <h2><?= h($puser['display_name']) ?><?= userBadges($puser) ?></h2>
+      <?php if ($puser['username']): ?><div class="profile-handle">@<?= h($puser['username']) ?></div><?php endif; ?>
+      <?php if ($puser['bio']): ?><div class="profile-bio"><?= h($puser['bio']) ?></div><?php endif; ?>
+      <div class="profile-stats">
+        <span><strong><?= $postCount ?></strong> Posts</span>
+        <span><strong><?= $followerCount ?></strong> Followers</span>
+        <span><strong><?= $followingCount ?></strong> Following</span>
+      </div>
+      <div class="profile-actions">
+        <?php if ($isOwn): ?>
+          <a href="?page=edit_profile" class="gbtn gbtn-outline">Edit Profile</a>
+        <?php elseif ($u): ?>
+          <?php if (!$pSuspended): ?><button class="gbtn gbtn-primary" onclick="toggleFollow(<?= $puser['id'] ?>,this)"><?= $isFollowing ? 'Unfollow' : 'Follow' ?></button><?php endif; ?>
+          <a href="?page=messages&with=<?= $puser['id'] ?>" class="gbtn gbtn-outline" style="font-size:12px">Message</a>
+        <?php else: ?>
+          <a href="?page=login" class="gbtn gbtn-primary">Follow</a>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+  <?php foreach ($profilePosts as $post): ?>
+  <div class="gcard">
+    <div class="post-head">
+      <img src="<?= avatarSrc($puser['avatar'], $puser['display_name']) ?>" class="post-av">
+      <div class="post-meta">
+        <div class="post-author"><?= h($puser['display_name']) ?><?= userBadges($puser) ?></div>
+        <div class="post-time"><?= timeAgo($post['created_at']) ?></div>
+      </div>
+      <?php if ($u && ($u['id'] == $post['user_id'] || $u['role'] === 'admin')): ?>
+      <form method="post" style="margin:0" onsubmit="return confirm('Delete?')"><input type="hidden" name="action" value="delete_post"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><button class="post-delete">&times;</button></form>
+      <?php endif; ?>
+    </div>
+    <?php if ($post['content']): ?><div class="post-body"><?= nl2br(h($post['content'])) ?></div><?php endif; ?>
+    <?php if ($post['image']): ?><img src="<?= h($post['image']) ?>" class="post-img"><?php endif; ?>
+    <div class="post-bar">
+      <?php if ($u && !isUserSuspended($u)): ?>
+      <button class="pbar-btn <?= $post['user_po'] ? 'plusoned' : '' ?>" onclick="plusOne(<?= $post['id'] ?>,this)"><svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>+1 <span class="poc"><?= $post['po_count'] ?></span></button>
+      <button class="pbar-btn" onclick="toggleCmts(<?= $post['id'] ?>)"><svg viewBox="0 0 24 24"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/></svg>Comment</button>
+      <?php else: ?>
+      <span style="font-size:13px;color:var(--sub);padding:8px 10px"><?= $post['po_count'] ?> +1s</span>
+      <?php endif; ?>
+    </div>
+    <div class="comments-area" id="cmts-<?= $post['id'] ?>" style="display:none">
+      <?php $cs = getDB()->prepare("SELECT c.*,u.display_name,u.avatar FROM comments c JOIN users u ON u.id=c.user_id WHERE c.post_id=? ORDER BY c.created_at ASC"); $cs->execute([$post['id']]); foreach ($cs->fetchAll() as $cm): ?>
+      <div class="cmt-item"><img src="<?= avatarSrc($cm['avatar'],$cm['display_name']) ?>" class="cmt-av"><div class="cmt-bubble"><div class="cmt-name"><a href="?page=profile&id=<?= $cm['user_id'] ?>"><?= h($cm['display_name']) ?></a></div><div class="cmt-text"><?= h($cm['content']) ?></div><div class="cmt-time"><?= timeAgo($cm['created_at']) ?></div></div></div>
+      <?php endforeach; ?>
+      <?php if ($u && !isUserSuspended($u)): ?>
+      <form method="post" class="cmt-form"><input type="hidden" name="action" value="comment"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><img src="<?= avatarSrc($u['avatar'],$u['display_name']) ?>" class="cmt-av"><input type="text" name="content" placeholder="Add a comment…" required><button class="gbtn gbtn-blue gbtn-sm">Post</button></form>
+      <?php endif; ?>
+    </div>
+  </div>
+  <?php endforeach; ?>
+  <?php if (empty($profilePosts)): ?><div class="gcard empty-state"><p>No posts yet.</p></div><?php endif; ?>
+</div>
+<?php } ?>
+
+<?php elseif ($page === 'edit_profile'):
+  requireLogin();
+?>
+<div id="wrap" style="max-width:600px;margin:0 auto">
+  <div class="gcard" style="padding:24px">
+    <h3 style="margin:0 0 20px;font-size:18px;font-weight:400">Edit Profile</h3>
+    <form method="post" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="update_profile">
+      <div class="form-group"><label>Display Name</label><input type="text" name="display_name" value="<?= h($u['display_name']) ?>" maxlength="60"></div>
+      <div class="form-group"><label>Bio</label><textarea name="bio" rows="3" maxlength="200"><?= h($u['bio'] ?? '') ?></textarea></div>
+      <div class="form-group"><label>Tagline</label><input type="text" name="tagline" value="<?= h($u['tagline'] ?? '') ?>" maxlength="80"></div>
+      <div class="form-group"><label>Location</label><input type="text" name="location" value="<?= h($u['location'] ?? '') ?>" maxlength="100"></div>
+      <div class="form-group"><label>Website</label><input type="url" name="website" value="<?= h($u['website'] ?? '') ?>"></div>
+      <div class="form-group"><label>Avatar Photo</label><input type="file" name="avatar" accept="image/*"></div>
+      <div class="form-group"><label>Cover Photo</label><input type="file" name="cover" accept="image/*"></div>
+      <button class="gbtn gbtn-blue" type="submit">Save Changes</button>
+      <a href="?page=profile&id=<?= $u['id'] ?>" class="gbtn gbtn-outline" style="margin-left:8px">Cancel</a>
+    </form>
+  </div>
+</div>
+
+<?php elseif ($page === 'people'):
+  $search = trim($_GET['q'] ?? '');
+  if ($search) {
+    $stmt = getDB()->prepare("SELECT * FROM users WHERE (display_name LIKE ? OR username LIKE ?) AND role!='admin' ORDER BY display_name LIMIT 40");
+    $stmt->execute(["%$search%", "%$search%"]);
+  } else {
+    $stmt = getDB()->query("SELECT * FROM users WHERE role!='admin' ORDER BY id DESC LIMIT 40");
+  }
+  $people = $stmt->fetchAll();
+  $myFollowing = $u ? getDB()->query("SELECT following_id FROM follows WHERE follower_id={$u['id']}")->fetchAll(PDO::FETCH_COLUMN) : [];
+?>
+<div id="wrap" style="max-width:700px;margin:0 auto">
+  <div class="page-head"><h2>&#128100; People</h2></div>
+  <div class="people-grid">
+    <?php foreach ($people as $p): $pSusp = isUserSuspended($p); ?>
+    <div class="gcard people-card">
+      <a href="?page=profile&id=<?= $p['id'] ?>"><img src="<?= avatarSrc($p['avatar'], $p['display_name']) ?>" class="people-av"></a>
+      <div class="people-info">
+        <a href="?page=profile&id=<?= $p['id'] ?>"><strong><?= h($p['display_name']) ?></strong><?= userBadges($p) ?></a>
+        <?php if ($p['username']): ?><div style="font-size:13px;color:var(--sub)">@<?= h($p['username']) ?></div><?php endif; ?>
+        <?php if ($p['bio']): ?><div style="font-size:13px;margin-top:4px"><?= h(mb_substr($p['bio'],0,80)) ?></div><?php endif; ?>
+      </div>
+      <?php if ($u && $u['id'] != $p['id'] && !$pSusp): ?>
+      <button class="gbtn gbtn-primary gbtn-sm" onclick="toggleFollow(<?= $p['id'] ?>,this)"><?= in_array($p['id'], $myFollowing) ? 'Unfollow' : 'Follow' ?></button>
+      <?php endif; ?>
+    </div>
+    <?php endforeach; ?>
+    <?php if (empty($people)): ?><div class="gcard empty-state" style="grid-column:1/-1"><p>No members found.</p></div><?php endif; ?>
+  </div>
+</div>
+
 <?php
 elseif ($page === 'communities'):
   $comms   = getDB()->query("SELECT c.*,u.display_name AS owner_name,(SELECT COUNT(*) FROM community_members WHERE community_id=c.id) AS mc FROM communities c JOIN users u ON u.id=c.owner_id WHERE c.visibility='public' ORDER BY mc DESC,c.created_at DESC")->fetchAll();
