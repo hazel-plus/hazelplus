@@ -1,4 +1,4 @@
-// Hazel+ - A google<?php
+<?php
 // serve images from /uploads/ before anything else loads
 $uri = $_SERVER['REQUEST_URI'] ?? '';
 if (preg_match('#/uploads/([a-zA-Z0-9_\-\.]+)$#', $uri, $m)) {
