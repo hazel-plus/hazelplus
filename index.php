@@ -22,18 +22,12 @@ if (preg_match('#/uploads/([a-zA-Z0-9_\-\.]+)$#', $uri, $m)) {
 /**
  * Hazel+ — a single-file PHP social network
  *
- * I built this because I liked Google+ and i wished i used it more. It's not perfect but it works,
- * and now it's open source so you can make it better than I can.
- *
  * v2.0.0 — going open source!
  * License: MIT
  * GitHub: https://github.com/hazel-plus/hazelplus
- *
- * Needs PHP 7.4+ and either SQLite (default) or MySQL.
  */
 
 // --- config ---
-// change these before deploying, especially ADMIN_PASS
 define('DB_TYPE',   'sqlite');
 define('DB_FILE',   __DIR__ . '/hazelplus.db');
 define('DB_HOST',   'localhost');
@@ -43,27 +37,22 @@ define('DB_PASS',   '');
 define('SITE_NAME', 'Hazel+');
 define('SITE_DESC', 'Share what matters. Connect for real.');
 define('ADMIN_EMAIL', 'admin@example.com');
-define('ADMIN_PASS',  'admin123');   // <-- PLEASE change this
+define('ADMIN_PASS',  'admin123');
 define('UPLOAD_DIR',  __DIR__ . '/uploads/');
 define('UPLOAD_URL',  '/uploads/');
 define('VERSION',     '2.0.0');
 define('GITHUB_URL',  'https://github.com/hazelplus/hazelplus');
 
-// legal stuff — edit these to match your actual site
 define('LEGAL_SITE_URL',  'https://example.com');
 define('LEGAL_CONTACT',   'legal@legal.com');
 define('LEGAL_EFFECTIVE', 'January 1, 2025');
 
 
-// --- legal page content ---
-// these are just strings, edit them however you like
-
 function getTosHtml(): string {
     $s = SITE_NAME; $e = LEGAL_CONTACT; $d = LEGAL_EFFECTIVE;
     return <<<HTML
 <h3>1. Acceptance of Terms</h3>
-<p>By creating an account or using <strong>$s</strong> ("the Service"), you agree to be bound by
-these Terms of Service. If you do not agree, please don't use the Service.</p>
+<p>By creating an account or using <strong>$s</strong> ("the Service"), you agree to be bound by these Terms of Service.</p>
 <h3>2. Eligibility</h3>
 <p>You must be at least <strong>13 years old</strong> to use the Service.</p>
 <h3>3. Your Account</h3>
@@ -84,9 +73,9 @@ these Terms of Service. If you do not agree, please don't use the Service.</p>
 <h3>5. Content Ownership</h3>
 <p>You own what you post. By posting it, you give $s permission to display and share it through the Service.</p>
 <h3>6. Termination</h3>
-<p>We can suspend or delete accounts that break these rules. We'll try to be fair about it.</p>
+<p>We can suspend or delete accounts that break these rules.</p>
 <h3>7. Disclaimers</h3>
-<p>The Service is provided "as is" — we do our best but can't guarantee anything. We're not liable for indirect or consequential damages from your use of the Service.</p>
+<p>The Service is provided "as is". We're not liable for indirect or consequential damages.</p>
 <h3>8. Changes</h3>
 <p>We might update these terms sometimes. Continuing to use the Service after changes means you accept them.</p>
 <h3>9. Questions?</h3>
@@ -101,7 +90,7 @@ function getPrivacyHtml(): string {
 <h3>1. What We Collect</h3>
 <ul>
   <li><strong>Account data:</strong> username, email, display name, and a hashed password.</li>
-  <li><strong>Profile data:</strong> bio, tagline, location, website, avatar and cover images — whatever you choose to share.</li>
+  <li><strong>Profile data:</strong> bio, tagline, location, website, avatar and cover images.</li>
   <li><strong>Content:</strong> your posts, comments, and messages.</li>
   <li><strong>Basic logs:</strong> pages visited, timestamps, standard server logs.</li>
 </ul>
@@ -114,21 +103,21 @@ function getPrivacyHtml(): string {
   <li>We <strong>don't</strong> run third-party ads.</li>
 </ul>
 <h3>3. Sharing</h3>
-<p>We don't share your info with third parties except when legally required or to protect the safety of the site and its users.</p>
+<p>We don't share your info with third parties except when legally required.</p>
 <h3>4. Cookies</h3>
-<p>Just one session cookie to keep you logged in. No tracking, no analytics cookies, no third-party cookies.</p>
+<p>Just one session cookie to keep you logged in. No tracking cookies.</p>
 <h3>5. Data Retention</h3>
-<p>Your data sticks around as long as your account is active. Want it gone? Email us and we'll delete everything within 30 days.</p>
+<p>Your data sticks around as long as your account is active. Email us to delete everything within 30 days.</p>
 <h3>6. Security</h3>
-<p>Passwords are hashed with bcrypt. We take reasonable precautions, though no internet service is 100% bulletproof.</p>
+<p>Passwords are hashed with bcrypt.</p>
 <h3>7. Kids</h3>
-<p>The Service isn't for anyone under 13. If we find out we have data from a child under 13, we delete it immediately.</p>
+<p>The Service isn't for anyone under 13.</p>
 <h3>8. Your Rights</h3>
-<p>Depending on where you live, you may have the right to access, correct, or delete your data. Email <a href="mailto:$e">$e</a> and we'll help.</p>
+<p>Email <a href="mailto:$e">$e</a> and we'll help.</p>
 <h3>9. Changes</h3>
 <p>We'll let registered users know if anything major changes here.</p>
 <h3>10. Contact</h3>
-<p>Privacy questions? Email <a href="mailto:$e">$e</a>.</p>
+<p>Email <a href="mailto:$e">$e</a>.</p>
 <p><em>Effective: $d</em></p>
 HTML;
 }
@@ -137,54 +126,49 @@ function getGuidelinesHtml(): string {
     $s = SITE_NAME; $e = LEGAL_CONTACT;
     return <<<HTML
 <h3>1. Be a decent human</h3>
-<p>Disagree all you want — that's fine. But don't harass people, don't make personal attacks, and don't target people because of who they are.</p>
+<p>Disagree all you want. But don't harass people, don't make personal attacks, and don't target people because of who they are.</p>
 <h3>2. No hate speech</h3>
-<p>Content that promotes hatred or discrimination against people based on race, ethnicity, religion, gender, sexuality, disability, or nationality isn't allowed here.</p>
+<p>Content that promotes hatred or discrimination based on race, ethnicity, religion, gender, sexuality, disability, or nationality isn't allowed.</p>
 <h3>3. No harassment</h3>
-<p>Don't intimidate, threaten, or repeatedly go after another user. That includes dogpiling, sharing someone's private info to embarrass them, and unsolicited hostile messages.</p>
+<p>Don't intimidate, threaten, or repeatedly go after another user.</p>
 <h3>4. Keep it legal</h3>
-<p>Don't post anything illegal where you or the recipient live. That includes copyrighted stuff you don't have rights to, defamatory content, impersonation, and — this one's absolute — any sexual content involving minors. That gets reported to law enforcement immediately, no exceptions.</p>
+<p>Don't post anything illegal. Sexual content involving minors gets reported to law enforcement immediately, no exceptions.</p>
 <h3>5. No spam</h3>
-<p>Don't flood feeds, run undisclosed bots, or do anything that looks like coordinated fake activity. Clickbait and misleading links aren't welcome either.</p>
+<p>Don't flood feeds, run undisclosed bots, or do anything that looks like coordinated fake activity.</p>
 <h3>6. Don't promote self-harm</h3>
 <p>Posts that encourage or glorify self-harm, suicide, eating disorders, or other dangerous health behaviors aren't allowed.</p>
 <h3>7. Respect privacy</h3>
-<p>Don't post someone's home address, phone number, private photos, or financial details without their explicit consent. That's doxxing and it results in an immediate ban.</p>
+<p>Don't post someone's home address, phone number, or private photos without their consent.</p>
 <h3>8. Adult content</h3>
-<p>Explicit content is only allowed in communities clearly marked 18+. Everything else needs to be safe for a general audience. Artistic or educational nudity is up to moderator judgment.</p>
+<p>Explicit content is only allowed in communities clearly marked 18+.</p>
 <h3>9. Community rules</h3>
-<p>Individual communities can set extra rules on top of these. Mods can remove content or people who break those rules, as long as the community rules don't contradict these site-wide ones.</p>
+<p>Individual communities can set extra rules on top of these.</p>
 <h3>10. Consequences</h3>
-<p>Breaking the rules can mean a content removal, a suspension, or a permanent ban — depending on how bad it is and whether it's happened before. Serious stuff (CSAM, credible violence threats) goes straight to law enforcement.</p>
+<p>Breaking the rules can mean content removal, a suspension, or a permanent ban.</p>
 <h3>11. Reporting</h3>
-<p>See something that shouldn't be here? Email <a href="mailto:$e">$e</a>. We review everything and try to respond within 48 hours.</p>
+<p>See something? Email <a href="mailto:$e">$e</a>. We review everything and try to respond within 48 hours.</p>
 <h3>12. Appeals</h3>
-<p>Think we got it wrong? Email <a href="mailto:$e">$e</a> with "Appeal" in the subject line and explain what happened. We'll look at it within 5 business days.</p>
+<p>Email <a href="mailto:$e">$e</a> with "Appeal" in the subject line.</p>
 HTML;
 }
 
 
 // --- database ---
-
 function getDB(): PDO {
     static $pdo = null;
     if ($pdo) return $pdo;
-
     if (DB_TYPE === 'sqlite')
         $pdo = new PDO('sqlite:' . DB_FILE);
     else
         $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4", DB_USER, DB_PASS);
-
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     if (DB_TYPE === 'sqlite') $pdo->exec('PRAGMA foreign_keys = ON;');
-
     return $pdo;
 }
 
 function setupDatabase(): void {
     $db = getDB();
-    // sqlite uses AUTOINCREMENT, mysql uses AUTO_INCREMENT
     $ai  = DB_TYPE === 'sqlite' ? 'INTEGER PRIMARY KEY AUTOINCREMENT' : 'INT AUTO_INCREMENT PRIMARY KEY';
     $txt = DB_TYPE === 'sqlite' ? 'TEXT' : 'LONGTEXT';
 
@@ -194,10 +178,8 @@ function setupDatabase(): void {
         bio TEXT DEFAULT '', avatar TEXT DEFAULT '', cover TEXT DEFAULT '',
         role TEXT DEFAULT 'user', tagline TEXT DEFAULT '',
         location TEXT DEFAULT '', website TEXT DEFAULT '',
-        early_access INTEGER DEFAULT 0,
-        tos_accepted INTEGER DEFAULT 0,
-        suspended INTEGER DEFAULT 0,
-        suspend_reason TEXT DEFAULT '',
+        early_access INTEGER DEFAULT 0, tos_accepted INTEGER DEFAULT 0,
+        suspended INTEGER DEFAULT 0, suspend_reason TEXT DEFAULT '',
         suspended_until DATETIME DEFAULT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP, last_login DATETIME)");
 
@@ -274,7 +256,6 @@ function setupDatabase(): void {
 
     $db->exec("CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT DEFAULT '')");
 
-    // migrations — just try adding columns, ignore if they already exist
     $migrations = [
         "ALTER TABLE communities ADD COLUMN color TEXT DEFAULT '#4285f4'",
         "ALTER TABLE communities ADD COLUMN icon TEXT DEFAULT '🌐'",
@@ -293,26 +274,22 @@ function setupDatabase(): void {
         "ALTER TABLE communities ADD COLUMN icon_image TEXT DEFAULT ''",
     ];
     foreach ($migrations as $m) {
-        try { $db->exec($m); } catch (Exception $e) { /* already exists, that's fine */ }
+        try { $db->exec($m); } catch (Exception $e) {}
     }
 
-    // default settings
     $db->exec("INSERT OR IGNORE INTO settings (key,value) VALUES ('early_access_mode','0')");
     $db->exec("INSERT OR IGNORE INTO settings (key,value) VALUES ('maintenance_mode','0')");
 
-    // create default admin if none exists
     if (!$db->query("SELECT id FROM users WHERE role='admin' LIMIT 1")->fetch()) {
         $hash = password_hash(ADMIN_PASS, PASSWORD_DEFAULT);
         $db->prepare("INSERT INTO users (username,email,password,display_name,role,bio,tos_accepted) VALUES (?,?,?,?,?,?,1)")
            ->execute(['admin', ADMIN_EMAIL, $hash, 'Administrator', 'admin', 'Site admin of ' . SITE_NAME]);
         $aid = $db->lastInsertId();
-        // give the admin default circles
         foreach (['Friends' => '#4285f4', 'Family' => '#0f9d58', 'Acquaintances' => '#f4b400', 'Following' => '#dd4b39'] as $name => $color)
             $db->prepare("INSERT INTO circles (user_id,name,color) VALUES (?,?,?)")->execute([$aid, $name, $color]);
     }
 }
 
-// settings helpers
 function getSetting(string $key): string {
     try {
         $s = getDB()->prepare("SELECT value FROM settings WHERE key=?");
@@ -327,34 +304,23 @@ function setSetting(string $key, string $val): void {
 function isEarlyAccess(): bool  { return getSetting('early_access_mode') === '1'; }
 function isMaintenanceMode(): bool { return getSetting('maintenance_mode') === '1'; }
 
-
-// --- suspension helpers ---
-
 function isUserSuspended(array $user): bool {
     if (!(int)($user['suspended'] ?? 0)) return false;
-
     $until = $user['suspended_until'] ?? null;
-    if (!$until) return true; // permanent
-
+    if (!$until) return true;
     if (strtotime($until) > time()) return true;
-
-    // suspension expired, lift it automatically
     getDB()->prepare("UPDATE users SET suspended=0, suspend_reason='', suspended_until=NULL WHERE id=?")
            ->execute([$user['id']]);
     return false;
 }
-
 function suspendUser(int $uid, string $reason, ?string $until = null): void {
     getDB()->prepare("UPDATE users SET suspended=1, suspend_reason=?, suspended_until=? WHERE id=?")
            ->execute([$reason, $until, $uid]);
 }
-
 function unsuspendUser(int $uid): void {
     getDB()->prepare("UPDATE users SET suspended=0, suspend_reason='', suspended_until=NULL WHERE id=?")
            ->execute([$uid]);
 }
-
-// --- session / auth helpers ---
 
 session_start();
 
@@ -385,19 +351,16 @@ function timeAgo(string $dt): string {
 function uploadFile(array $f, string $prefix = ''): string {
     $dir = __DIR__ . '/uploads/';
     if (!is_dir($dir)) mkdir($dir, 0755, true);
-
     $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
     $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-
     if (!in_array($ext, $allowed) || $f['size'] > 5 * 1024 * 1024) return '';
-
     $name = $prefix . uniqid() . '.' . $ext;
     move_uploaded_file($f['tmp_name'], $dir . $name);
     return '/uploads/' . $name;
 }
 
 function addNotif(int $to, int $from, string $type, int $ref, string $msg): void {
-    if ($to === $from) return; // don't notify yourself
+    if ($to === $from) return;
     getDB()->prepare("INSERT INTO notifications (user_id,from_user_id,type,ref_id,message) VALUES (?,?,?,?,?)")
            ->execute([$to, $from, $type, $ref, $msg]);
 }
@@ -418,7 +381,6 @@ function unreadMsgs(): int {
     return (int)$s->fetchColumn();
 }
 
-// generate an avatar — either the uploaded image or an SVG initial placeholder
 function avatarSrc(?string $path, string $name = '?'): string {
     if ($path) return h($path);
     $l = strtoupper($name[0] ?? '?');
@@ -485,7 +447,6 @@ function renderReshareEmbed(array $orig): string {
     return $out;
 }
 
-// run db setup — if this blows up, show the error rather than a blank page
 try { setupDatabase(); } catch (Exception $e) {
     die("<pre style='color:red;padding:20px'>Database error: " . $e->getMessage() . "\n\nMake sure the directory is writable.</pre>");
 }
@@ -496,8 +457,6 @@ $earlyAccess = isEarlyAccess();
 
 
 // --- maintenance mode gate ---
-// admins can still log in, everyone else sees a holding page
-
 if (isMaintenanceMode()) {
     $_cu = currentUser();
     $isAdmin       = $_cu && $_cu['role'] === 'admin';
@@ -526,7 +485,6 @@ if (isMaintenanceMode()) {
 }
 
 // --- POST handlers ---
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($action) {
 
@@ -616,33 +574,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'register':
             if (isEarlyAccess()) { $_SESSION['error'] = 'Registration is currently closed.'; redirect('?page=register'); break; }
             if (empty($_POST['agree_tos'])) { $_SESSION['error'] = 'You need to agree to the Terms of Service to create an account.'; redirect('?page=register&step=3'); break; }
-
             $pw = $_POST['password'] ?? '';
             $pc = $_POST['password_confirm'] ?? '';
             if ($pw !== $pc) { $_SESSION['error'] = 'Passwords do not match.'; redirect('?page=register&step=3'); }
-
             $un = preg_replace('/[^a-z0-9_]/', '', strtolower(trim($_POST['username'] ?? $_SESSION['reg_un'] ?? '')));
             $em = trim($_POST['email'] ?? $_SESSION['reg_em'] ?? '');
             $dn = trim($_POST['display_name'] ?? $_SESSION['reg_name'] ?? '');
-
             if (strlen($un) < 3 || strlen($pw) < 6 || !filter_var($em, FILTER_VALIDATE_EMAIL) || !$dn) {
                 $_SESSION['error'] = 'Fill in all fields. Username needs at least 3 characters, password at least 6.';
                 redirect('?page=register&step=1');
             }
-
             try {
                 getDB()->prepare("INSERT INTO users (username,email,password,display_name,early_access,tos_accepted) VALUES (?,?,?,?,0,1)")
                        ->execute([$un, $em, password_hash($pw, PASSWORD_DEFAULT), $dn]);
                 $nid = (int)getDB()->lastInsertId();
-
                 foreach (['Friends' => '#4285f4', 'Family' => '#0f9d58', 'Acquaintances' => '#f4b400', 'Following' => '#dd4b39'] as $name => $color)
                     getDB()->prepare("INSERT INTO circles (user_id,name,color) VALUES (?,?,?)")->execute([$nid, $name, $color]);
-
-                // auto-follow the admin so new users see something on first login
                 $adminId = getAdminId();
                 if ($adminId && $adminId !== $nid)
                     try { getDB()->prepare("INSERT INTO follows (follower_id,following_id) VALUES (?,?)")->execute([$nid, $adminId]); } catch (Exception $e) {}
-
                 unset($_SESSION['reg_name'], $_SESSION['reg_un'], $_SESSION['reg_em']);
                 $_SESSION['user_id'] = $nid;
                 redirect('?page=home');
@@ -697,23 +647,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cid     = (int)($_POST['community_id'] ?? 0);
             $content = trim($_POST['content'] ?? '');
             if (!$content && empty($_FILES['image']['name'])) { redirect('?page=community&id=' . $cid); break; }
-
             $commChk = getDB()->prepare("SELECT owner_id FROM communities WHERE id=?");
             $commChk->execute([$cid]);
             $commRow = $commChk->fetch();
             if (!$commRow) { redirect('?page=communities'); break; }
-
             $isCommOwner = ($commRow['owner_id'] == $u['id'] || $u['role'] === 'admin');
             $memChk = getDB()->prepare("SELECT id FROM community_members WHERE community_id=? AND user_id=?");
             $memChk->execute([$cid, $u['id']]);
             $memRow = $memChk->fetch();
-
-            // auto-join owners if they somehow aren't already a member
             if ($isCommOwner && !$memRow) {
                 try { getDB()->prepare("INSERT INTO community_members (community_id,user_id,role) VALUES (?,?,?)")->execute([$cid, $u['id'], 'owner']); } catch (Exception $e) {}
             }
             if (!$isCommOwner && !$memRow) { redirect('?page=community&id=' . $cid); break; }
-
             $img = '';
             if (!empty($_FILES['image']['name'])) $img = uploadFile($_FILES['image'], 'post_');
             getDB()->prepare("INSERT INTO posts (user_id,content,image,visibility,community_id) VALUES (?,?,?,'public',?)")
@@ -739,19 +684,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             requireLogin(); $u = currentUser();
             header('Content-Type: application/json');
             if (isUserSuspended($u)) { echo json_encode(['ok' => false, 'error' => 'Account suspended']); exit; }
-
             $pid = (int)($_POST['post_id'] ?? 0);
             $cmt = trim($_POST['comment'] ?? '');
-
             $origStmt = getDB()->prepare("SELECT * FROM posts WHERE id=?");
             $origStmt->execute([$pid]);
             $orig = $origStmt->fetch();
             if (!$orig) { echo json_encode(['ok' => false, 'error' => 'Post not found']); exit; }
             if ($orig['user_id'] == $u['id']) { echo json_encode(['ok' => false, 'error' => 'Can\'t reshare your own post']); exit; }
-
-            // always reshare the original, not a reshare-of-reshare
             $rootId = $orig['original_post_id'] ? (int)$orig['original_post_id'] : $pid;
-
             try {
                 getDB()->prepare("INSERT INTO reshares (post_id,user_id,comment) VALUES (?,?,?)")->execute([$rootId, $u['id'], $cmt]);
                 getDB()->prepare("INSERT INTO posts (user_id,content,image,visibility,original_post_id,reshare_comment) VALUES (?,?,?,?,?,?)")
@@ -764,7 +704,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $cnt->execute([$rootId]);
                 echo json_encode(['ok' => true, 'count' => (int)$cnt->fetchColumn()]);
             } catch (Exception $e) {
-                // already reshared — toggle it off
                 getDB()->prepare("DELETE FROM reshares WHERE post_id=? AND user_id=?")->execute([$rootId, $u['id']]);
                 getDB()->prepare("DELETE FROM posts WHERE user_id=? AND original_post_id=?")->execute([$u['id'], $rootId]);
                 $cnt = getDB()->prepare("SELECT COUNT(*) FROM reshares WHERE post_id=?");
@@ -809,7 +748,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $pp = $s->fetch();
                 if ($pp) addNotif($pp['user_id'], $u['id'], 'plusone', $pid, h($u['display_name']) . " +1'd your post.");
             } catch (Exception $e) {
-                // already +1'd, remove it (toggle)
                 getDB()->prepare("DELETE FROM plusones WHERE post_id=? AND user_id=?")->execute([$pid, $u['id']]);
             }
             header('Content-Type: application/json');
@@ -1009,7 +947,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             getDB()->exec("UPDATE posts SET image='' WHERE image LIKE 'data:%'");
             getDB()->exec("UPDATE communities SET banner_image='' WHERE banner_image LIKE 'data:%'");
             getDB()->exec("UPDATE communities SET icon_image='' WHERE icon_image LIKE 'data:%'");
-            $_SESSION['success'] = 'Cleared all base64 images. You\'ll need to re-upload profile photos.';
+            $_SESSION['success'] = 'Cleared all base64 images.';
             redirect('?page=admin');
             break;
 
@@ -1066,7 +1004,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
 $u           = currentUser();
 $notifCount  = unreadNotifs();
 $msgCount    = unreadMsgs();
@@ -1074,7 +1011,6 @@ $error       = $_SESSION['error'] ?? '';
 $success     = $_SESSION['success'] ?? '';
 unset($_SESSION['error'], $_SESSION['success']);
 
-// bounce suspended users to the suspended page
 if ($u && isUserSuspended($u) && $action !== 'logout' && !in_array($page, ['login', 'suspended'])) {
     $page = 'suspended';
 }
@@ -1166,7 +1102,8 @@ a{color:#4285f4;text-decoration:none}a:hover{text-decoration:underline}img{displ
 .post-bar{display:flex;align-items:center;padding:4px 10px;border-top:1px solid var(--border)}
 .pbar-btn{display:flex;align-items:center;gap:5px;padding:8px 10px;border-radius:2px;border:none;background:transparent;cursor:pointer;font-size:13px;color:var(--sub);transition:background .15s,color .15s}
 .pbar-btn:hover{background:#f5f5f5;color:var(--text)}.pbar-btn.plusoned{color:var(--gred)}.pbar-btn.reshared{color:var(--gblue)}.pbar-btn svg{width:18px;height:18px;fill:currentColor}
-.reshare-popover{position:absolute;z-index:300;background:#fff;border:1px solid #ddd;border-radius:3px;box-shadow:0 4px 16px rgba(0,0,0,.15);padding:14px 16px;width:300px;top:calc(100% + 6px);left:0}
+/* FIX 2: reshare popover is now position:fixed via JS — these styles just handle appearance */
+.reshare-popover{background:#fff;border:1px solid #ddd;border-radius:3px;box-shadow:0 4px 16px rgba(0,0,0,.15);padding:14px 16px;width:300px;}
 .reshare-popover textarea{width:100%;border:1px solid #ddd;border-radius:2px;padding:8px 10px;font-size:13px;font-family:inherit;resize:none;outline:none;min-height:70px}
 .reshare-popover textarea:focus{border-color:var(--gblue)}
 .reshare-popover-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:9px}
@@ -1536,9 +1473,7 @@ if ($page === 'suspended'):
     <?php else: ?>
     <p style="color:#c5221f;font-size:13px;margin-bottom:20px">This suspension is <strong>permanent</strong>.</p>
     <?php endif; ?>
-    <p style="font-size:13px;color:#999;margin-bottom:24px">
-      Think this is a mistake? Email <a href="mailto:<?= LEGAL_CONTACT ?>"><?= LEGAL_CONTACT ?></a>.
-    </p>
+    <p style="font-size:13px;color:#999;margin-bottom:24px">Think this is a mistake? Email <a href="mailto:<?= LEGAL_CONTACT ?>"><?= LEGAL_CONTACT ?></a>.</p>
     <form method="post" style="margin:0">
       <input type="hidden" name="action" value="logout">
       <button class="gbtn gbtn-outline" style="margin:0 auto">Sign out</button>
@@ -1554,22 +1489,10 @@ if ($page === 'suspended'):
       <p>A revival of the best parts of Google+, built by one teenager who wouldn't let it die.</p>
     </div>
     <div class="about-faq">
-      <div class="faq-item">
-        <div class="faq-q">What even is Hazel+?</div>
-        <div class="faq-a">Hazel+ is a revival of Google+, the social network Google killed in 2019. I was 14 when I started building it because I missed everything that made Google+ great — the Circles, the Communities, the clean design. So I rebuilt it from scratch in a single PHP file.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Is it open source?</div>
-        <div class="faq-a">Yes! As of v2.0.0, Hazel+ is open source under the MIT license. You can find the source, report bugs, or submit a pull request on <a href="<?= GITHUB_URL ?>" target="_blank">GitHub</a>. Contributions welcome.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Does Hazel+ have ads?</div>
-        <div class="faq-a">No. There are no ads, no trackers, no analytics. The whole point is a clean social experience — ads were never part of that.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">How can I support the project?</div>
-        <div class="faq-a">Star the repo on GitHub, tell your friends, or submit a pull request if you find a bug or have a feature idea. That's genuinely all I need.</div>
-      </div>
+      <div class="faq-item"><div class="faq-q">What even is Hazel+?</div><div class="faq-a">Hazel+ is a revival of Google+, the social network Google killed in 2019. I was 14 when I started building it because I missed everything that made Google+ great — the Circles, the Communities, the clean design. So I rebuilt it from scratch in a single PHP file.</div></div>
+      <div class="faq-item"><div class="faq-q">Is it open source?</div><div class="faq-a">Yes! As of v2.0.0, Hazel+ is open source under the MIT license. You can find the source on <a href="<?= GITHUB_URL ?>" target="_blank">GitHub</a>.</div></div>
+      <div class="faq-item"><div class="faq-q">Does Hazel+ have ads?</div><div class="faq-a">No. There are no ads, no trackers, no analytics.</div></div>
+      <div class="faq-item"><div class="faq-q">How can I support the project?</div><div class="faq-a">Star the repo on GitHub, tell your friends, or submit a pull request.</div></div>
     </div>
     <div class="about-meta">
       <a href="<?= GITHUB_URL ?>" target="_blank" class="oss-badge">&#128196; View on GitHub</a>
@@ -1583,37 +1506,22 @@ if ($page === 'suspended'):
 
 <?php elseif ($page === 'tos'): ?>
 <div class="legal-wrap"><div class="legal-card">
-  <h1>Terms of Service</h1>
-  <p class="legal-eff">Effective: <?= LEGAL_EFFECTIVE ?></p>
-  <div class="legal-tabs">
-    <a href="?page=tos"        class="legal-tab active">Terms of Service</a>
-    <a href="?page=privacy"    class="legal-tab">Privacy Policy</a>
-    <a href="?page=guidelines" class="legal-tab">Community Guidelines</a>
-  </div>
+  <h1>Terms of Service</h1><p class="legal-eff">Effective: <?= LEGAL_EFFECTIVE ?></p>
+  <div class="legal-tabs"><a href="?page=tos" class="legal-tab active">Terms of Service</a><a href="?page=privacy" class="legal-tab">Privacy Policy</a><a href="?page=guidelines" class="legal-tab">Community Guidelines</a></div>
   <?= getTosHtml() ?>
 </div></div>
 
 <?php elseif ($page === 'privacy'): ?>
 <div class="legal-wrap"><div class="legal-card">
-  <h1>Privacy Policy</h1>
-  <p class="legal-eff">Effective: <?= LEGAL_EFFECTIVE ?></p>
-  <div class="legal-tabs">
-    <a href="?page=tos"        class="legal-tab">Terms of Service</a>
-    <a href="?page=privacy"    class="legal-tab active">Privacy Policy</a>
-    <a href="?page=guidelines" class="legal-tab">Community Guidelines</a>
-  </div>
+  <h1>Privacy Policy</h1><p class="legal-eff">Effective: <?= LEGAL_EFFECTIVE ?></p>
+  <div class="legal-tabs"><a href="?page=tos" class="legal-tab">Terms of Service</a><a href="?page=privacy" class="legal-tab active">Privacy Policy</a><a href="?page=guidelines" class="legal-tab">Community Guidelines</a></div>
   <?= getPrivacyHtml() ?>
 </div></div>
 
 <?php elseif ($page === 'guidelines'): ?>
 <div class="legal-wrap"><div class="legal-card">
-  <h1>Community Guidelines</h1>
-  <p class="legal-eff">Effective: <?= LEGAL_EFFECTIVE ?></p>
-  <div class="legal-tabs">
-    <a href="?page=tos"        class="legal-tab">Terms of Service</a>
-    <a href="?page=privacy"    class="legal-tab">Privacy Policy</a>
-    <a href="?page=guidelines" class="legal-tab active">Community Guidelines</a>
-  </div>
+  <h1>Community Guidelines</h1><p class="legal-eff">Effective: <?= LEGAL_EFFECTIVE ?></p>
+  <div class="legal-tabs"><a href="?page=tos" class="legal-tab">Terms of Service</a><a href="?page=privacy" class="legal-tab">Privacy Policy</a><a href="?page=guidelines" class="legal-tab active">Community Guidelines</a></div>
   <?= getGuidelinesHtml() ?>
 </div></div>
 
@@ -1699,7 +1607,7 @@ if ($page === 'suspended'):
     <div class="hz-email-shown"><?= $regEm ?></div>
   </div>
   <h1 class="hz-title" style="font-size:20px;margin-top:16px">Set a password</h1>
-  <p class="hz-subtitle">At least 6 characters. Mix letters and numbers for something stronger.</p>
+  <p class="hz-subtitle">At least 6 characters.</p>
   <form method="post">
     <input type="hidden" name="action" value="register">
     <input type="hidden" name="display_name" value="<?= $regName ?>">
@@ -1709,19 +1617,15 @@ if ($page === 'suspended'):
     <div class="hz-form-row"><label class="hz-input-label">Confirm password</label><input class="hz-input" type="password" name="password_confirm" minlength="6" required></div>
     <div class="tos-agree-box">
       <div class="tos-scroll">
-        <strong style="font-size:12px;color:#202124;display:block;margin-bottom:6px">Quick summary of what you're agreeing to:</strong>
-        Use <?= SITE_NAME ?> lawfully and respectfully. You must be at least 13. You keep ownership of content you post but let us display it.
-        We don't sell your data or show ads. Accounts that break the rules can be suspended.<br><br>
-        <a href="?page=tos"        target="_blank" style="color:#1a73e8">Terms of Service ↗</a> &nbsp;&middot;&nbsp;
-        <a href="?page=privacy"    target="_blank" style="color:#1a73e8">Privacy Policy ↗</a> &nbsp;&middot;&nbsp;
+        <strong style="font-size:12px;color:#202124;display:block;margin-bottom:6px">Quick summary:</strong>
+        Use <?= SITE_NAME ?> lawfully and respectfully. You must be at least 13. We don't sell your data or show ads.<br><br>
+        <a href="?page=tos" target="_blank" style="color:#1a73e8">Terms of Service ↗</a> &nbsp;&middot;&nbsp;
+        <a href="?page=privacy" target="_blank" style="color:#1a73e8">Privacy Policy ↗</a> &nbsp;&middot;&nbsp;
         <a href="?page=guidelines" target="_blank" style="color:#1a73e8">Community Guidelines ↗</a>
       </div>
       <label class="tos-agree-label">
         <input type="checkbox" name="agree_tos" value="1" id="agreeChk" onchange="document.getElementById('createBtn').disabled=!this.checked">
-        I'm at least 13 and I agree to the
-        <a href="?page=tos" target="_blank" style="color:#1a73e8">Terms</a>,
-        <a href="?page=privacy" target="_blank" style="color:#1a73e8">Privacy Policy</a>,
-        and <a href="?page=guidelines" target="_blank" style="color:#1a73e8">Guidelines</a>.
+        I'm at least 13 and I agree to the <a href="?page=tos" target="_blank" style="color:#1a73e8">Terms</a>, <a href="?page=privacy" target="_blank" style="color:#1a73e8">Privacy Policy</a>, and <a href="?page=guidelines" target="_blank" style="color:#1a73e8">Guidelines</a>.
       </label>
     </div>
     <div class="hz-step-footer">
@@ -2175,168 +2079,194 @@ document.getElementById('newCircleName').addEventListener('keydown', e => { if (
 render();
 </script>
 <?php
-// ---- HOME / STREAM ----
-elseif ($page === 'home'):
-  if ($u) {
-    $filterCircleId = (isset($_GET['circle']) && $_GET['circle'] !== 'all') ? (int)$_GET['circle'] : 0;
-    // make sure the circle belongs to this user
-    if ($filterCircleId) {
-      $cOwn = getDB()->prepare("SELECT id FROM circles WHERE id=? AND user_id=?");
-      $cOwn->execute([$filterCircleId, $u['id']]);
-      if (!$cOwn->fetch()) $filterCircleId = 0;
-    }
-
-    $myCircles = getDB()->prepare("SELECT c.id, c.name, c.color, (SELECT COUNT(*) FROM circle_members WHERE circle_id=c.id) AS mc FROM circles c WHERE c.user_id=? ORDER BY c.name ASC");
-    $myCircles->execute([$u['id']]);
-    $myCircles = $myCircles->fetchAll();
-
-    $postCols = "p.*,u.display_name,u.username,u.avatar,u.role,u.early_access,u.suspended,
-      (SELECT COUNT(*) FROM plusones WHERE post_id=COALESCE(p.original_post_id,p.id)) AS po_count,
-      (SELECT COUNT(*) FROM comments WHERE post_id=COALESCE(p.original_post_id,p.id)) AS cm_count,
-      (SELECT COUNT(*) FROM plusones WHERE post_id=COALESCE(p.original_post_id,p.id) AND user_id=?) AS user_po,
-      (SELECT COUNT(*) FROM reshares WHERE post_id=COALESCE(p.original_post_id,p.id)) AS reshare_count";
-
-    if ($filterCircleId) {
-      $feedStmt = getDB()->prepare("SELECT $postCols FROM posts p JOIN users u ON u.id=p.user_id WHERE p.user_id IN (SELECT member_id FROM circle_members WHERE circle_id=?) AND p.visibility='public' AND p.community_id IS NULL ORDER BY p.created_at DESC LIMIT 50");
-      $feedStmt->execute([$u['id'], $filterCircleId]);
-    } else {
-      $feedStmt = getDB()->prepare("SELECT $postCols FROM posts p JOIN users u ON u.id=p.user_id WHERE (p.user_id=? OR p.user_id IN (SELECT following_id FROM follows WHERE follower_id=?)) AND p.visibility='public' AND p.community_id IS NULL ORDER BY p.created_at DESC LIMIT 50");
-      $feedStmt->execute([$u['id'], $u['id'], $u['id']]);
-    }
-    $posts = $feedStmt->fetchAll();
-
-    $sugStmt = getDB()->prepare("SELECT id,display_name,username,avatar,tagline FROM users WHERE id!=? AND id NOT IN (SELECT following_id FROM follows WHERE follower_id=?) AND suspended=0 ORDER BY RANDOM() LIMIT 6");
-    $sugStmt->execute([$u['id'], $u['id']]);
-    $suggestions = $sugStmt->fetchAll();
-  } else {
-    $filterCircleId = 0; $myCircles = [];
-    $posts = getDB()->query("SELECT p.*,u.display_name,u.username,u.avatar,u.role,u.early_access,u.suspended,(SELECT COUNT(*) FROM plusones WHERE post_id=p.id) AS po_count,(SELECT COUNT(*) FROM comments WHERE post_id=p.id) AS cm_count,0 AS user_po FROM posts p JOIN users u ON u.id=p.user_id WHERE p.visibility='public' ORDER BY p.created_at DESC LIMIT 30")->fetchAll();
-    $suggestions = [];
-  }
-
-  $isSuspended = $u && isUserSuspended($u);
-?>
-<div id="wrap" class="stream-layout">
-<?php if ($u): ?>
-<div id="sidebar-left">
-  <div class="gcard sleft-profile">
-    <a href="?page=profile&id=<?= $u['id'] ?>"><img src="<?= avatarSrc($u['avatar'], $u['display_name']) ?>" style="width:64px;height:64px;border-radius:50%;object-fit:cover;margin:0 auto 8px"></a>
-    <div style="font-size:14px;font-weight:500"><?= h($u['display_name']) ?><?= userBadges($u) ?></div>
-    <div style="font-size:12px;color:var(--sub)">@<?= h($u['username']) ?></div>
-  </div>
-  <div class="gcard" style="overflow:hidden"><div class="sleft-nav">
-    <div class="sleft-section">Menu</div>
-    <a href="?page=home" class="<?= ($page==='home'&&!$filterCircleId)?'active':'' ?>"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>Stream</a>
-    <a href="?page=explore"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>Explore</a>
-    <a href="?page=people"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>People</a>
-    <a href="?page=communities"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>Communities</a>
-    <a href="?page=notifications"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6V11c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 1 0-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>Notifications<?php if ($notifCount>0): ?><span style="background:var(--gred);color:#fff;border-radius:8px;font-size:10px;padding:1px 5px;margin-left:auto"><?= $notifCount ?></span><?php endif; ?></a>
-    <a href="?page=messages"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>Messages<?php if ($msgCount>0): ?><span style="background:var(--gblue);color:#fff;border-radius:8px;font-size:10px;padding:1px 5px;margin-left:auto"><?= $msgCount ?></span><?php endif; ?></a>
-    <?php if ($u['role']==='admin'): ?><a href="?page=admin"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>Admin Panel</a><?php endif; ?>
-    <div style="height:4px"></div>
-  </div></div>
-
-  <?php if (!empty($myCircles)): ?>
-  <div class="gcard" style="overflow:hidden"><div class="sleft-nav">
-    <div class="sleft-section" style="display:flex;align-items:center;justify-content:space-between;padding-right:12px">
-      <span>Circles</span>
-      <a href="?page=circles" style="font-size:10px;color:var(--gblue);font-weight:600;text-transform:none;letter-spacing:0">Manage</a>
+            Reshare <span class="rsc" id="rsc-<?= $rootPostId ?>"><?= ($post['reshare_count'] ?? 0) > 0 ? $post['reshare_count'] : '' ?></span>
+          </button>
+        </div>
+        <?php else: ?>
+        <button class="pbar-btn" style="cursor:default;opacity:.5" disabled>
+          <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+          Reshare
+        </button>
+        <?php endif; ?>
+        <div class="pbar-sep"></div>
+        <button class="pbar-btn" onclick="openRipples(<?= $rootPostId ?>)">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg>
+          Ripples
+        </button>
+      <?php else: ?>
+        <a href="?page=login" class="pbar-btn">
+          <svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>+1
+        </a>
+        <div class="pbar-sep"></div>
+        <a href="?page=login" class="pbar-btn">
+          <svg viewBox="0 0 24 24"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/></svg>
+          <?= $post['cm_count'] ?> Comment<?= $post['cm_count'] != 1 ? 's' : '' ?>
+        </a>
+      <?php endif; ?>
     </div>
-    <?php foreach ($myCircles as $mc): $isActive = ($filterCircleId === (int)$mc['id']); ?>
-    <a href="?page=home&circle=<?= $mc['id'] ?>" class="sleft-circle-link <?= $isActive ? 'active' : '' ?>" style="--circle-color:<?= h($mc['color']) ?>">
-      <span class="sleft-circle-dot" style="background:<?= h($mc['color']) ?>"></span>
-      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><?= h($mc['name']) ?></span>
-      <span class="sleft-circle-count"><?= (int)$mc['mc'] ?></span>
-    </a>
-    <?php endforeach; ?>
-    <div style="height:6px"></div>
-  </div></div>
-  <?php endif; ?>
+
+    <div id="cmts-<?= $rootPostId ?>" style="display:none">
+      <?php
+        $cmtsQ = getDB()->prepare("SELECT c.*,u.display_name,u.username,u.avatar FROM comments c JOIN users u ON u.id=c.user_id WHERE c.post_id=? ORDER BY c.created_at ASC");
+        $cmtsQ->execute([$rootPostId]);
+        $comments = $cmtsQ->fetchAll();
+      ?>
+      <div class="comments-area">
+        <?php foreach ($comments as $cmt): ?>
+        <div class="cmt-item">
+          <img src="<?= avatarSrc($cmt['avatar'], $cmt['display_name']) ?>" class="cmt-av">
+          <div class="cmt-bubble">
+            <div class="cmt-name"><a href="?page=profile&id=<?= $cmt['user_id'] ?>"><?= h($cmt['display_name']) ?></a></div>
+            <div class="cmt-text"><?= h($cmt['content']) ?></div>
+            <div class="cmt-time"><?= timeAgo($cmt['created_at']) ?></div>
+          </div>
+        </div>
+        <?php endforeach; ?>
+        <?php if ($u && !$isSuspended): ?>
+        <form method="post" class="cmt-form">
+          <input type="hidden" name="action" value="comment">
+          <input type="hidden" name="post_id" value="<?= $rootPostId ?>">
+          <img src="<?= avatarSrc($u['avatar'], $u['display_name']) ?>" class="av32">
+          <input type="text" name="content" placeholder="Add a comment..." required>
+          <button class="gbtn gbtn-blue gbtn-sm">Post</button>
+        </form>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+  <?php endforeach; ?>
+</div>
+
+<?php if ($u && !empty($suggestions)): ?>
+<div id="sidebar-right">
+  <div class="gcard">
+    <div class="rsb-section">
+      <div class="rsb-title">People you may know</div>
+      <?php foreach ($suggestions as $sug): ?>
+      <div class="rsb-person">
+        <a href="?page=profile&id=<?= $sug['id'] ?>"><img src="<?= avatarSrc($sug['avatar'], $sug['display_name']) ?>" class="av40"></a>
+        <div class="rsb-person-info">
+          <div class="n"><a href="?page=profile&id=<?= $sug['id'] ?>" style="color:#212121"><?= h($sug['display_name']) ?></a></div>
+          <div class="t"><?= h($sug['tagline'] ?: '@'.$sug['username']) ?></div>
+        </div>
+        <form method="post" style="margin:0">
+          <input type="hidden" name="action" value="follow">
+          <input type="hidden" name="target_id" value="<?= $sug['id'] ?>">
+          <button class="gbtn gbtn-outline gbtn-sm">Follow</button>
+        </form>
+      </div>
+      <?php endforeach; ?>
+    </div>
+    <div style="padding:0 14px 12px">
+      <a href="?page=people" style="font-size:12px;color:var(--gblue)">See all people &rarr;</a>
+    </div>
+  </div>
+  <div style="font-size:11px;color:#bbb;text-align:center;padding:8px 0;line-height:2">
+    <a href="?page=about" style="color:#bbb">About</a> &middot;
+    <a href="?page=tos" style="color:#bbb">Terms</a> &middot;
+    <a href="?page=privacy" style="color:#bbb">Privacy</a> &middot;
+    <a href="?page=guidelines" style="color:#bbb">Guidelines</a><br>
+    <?= SITE_NAME ?> &copy; <?= date('Y') ?>
+  </div>
 </div>
 <?php endif; ?>
+</div>
 
-<div id="stream">
-  <?php if (!$u): ?>
-  <div class="guest-banner">
-    <h2>Welcome to <?= SITE_NAME ?></h2>
-    <p>Share what matters. Connect with people who care about the same things you do.</p>
-    <div class="guest-banner-btns">
-      <?php if (!$earlyAccess): ?><a href="?page=register" class="gbtn gbtn-red">Join <?= SITE_NAME ?></a><?php endif; ?>
-      <a href="?page=login" class="gbtn gbtn-outline" style="color:#fff;border-color:rgba(255,255,255,.4)">Sign In</a>
+<?php
+// ---- PROFILE PAGE ----
+elseif ($page === 'profile'):
+  $pid = (int)($_GET['id'] ?? ($u['id'] ?? 0));
+  $ps = getDB()->prepare("SELECT * FROM users WHERE id=?");
+  $ps->execute([$pid]);
+  $prof = $ps->fetch();
+  if (!$prof) { echo '<div id="wrap"><div class="gcard empty-state"><p>User not found.</p></div></div>'; goto END_OUTPUT; }
+  $profTab = $_GET['tab'] ?? 'posts';
+  $isOwn = $u && $u['id'] == $prof['id'];
+  $isFollowing = false;
+  if ($u && !$isOwn) {
+    $fq = getDB()->prepare("SELECT id FROM follows WHERE follower_id=? AND following_id=?");
+    $fq->execute([$u['id'], $pid]);
+    $isFollowing = (bool)$fq->fetch();
+  }
+  $followerCount  = (int)getDB()->prepare("SELECT COUNT(*) FROM follows WHERE following_id=?")->execute([$pid]) ? getDB()->query("SELECT COUNT(*) FROM follows WHERE following_id=$pid")->fetchColumn() : 0;
+  $followingCount = (int)getDB()->query("SELECT COUNT(*) FROM follows WHERE follower_id=$pid")->fetchColumn();
+  $postCount      = (int)getDB()->query("SELECT COUNT(*) FROM posts WHERE user_id=$pid")->fetchColumn();
+?>
+<div id="wrap">
+<div class="gcard" style="overflow:hidden;margin-bottom:12px">
+  <div class="prof-cover">
+    <?php if ($prof['cover']): ?><img src="<?= h($prof['cover']) ?>" alt=""><?php endif; ?>
+    <div class="prof-cover-overlay"></div>
+  </div>
+  <div class="prof-head">
+    <img src="<?= avatarSrc($prof['avatar'], $prof['display_name']) ?>" class="av96">
+    <div class="prof-info">
+      <h2><?= h($prof['display_name']) ?><?= userBadges($prof) ?></h2>
+      <div class="tagline"><?= h($prof['tagline'] ?: '@'.$prof['username']) ?></div>
+    </div>
+    <div class="prof-actions">
+      <?php if ($isOwn): ?>
+        <a href="?page=settings" class="gbtn gbtn-outline gbtn-sm">Edit profile</a>
+      <?php elseif ($u): ?>
+        <form method="post" style="margin:0">
+          <input type="hidden" name="action" value="<?= $isFollowing ? 'unfollow' : 'follow' ?>">
+          <input type="hidden" name="target_id" value="<?= $pid ?>">
+          <button class="gbtn <?= $isFollowing ? 'gbtn-outline' : 'gbtn-blue' ?> gbtn-sm"><?= $isFollowing ? 'Unfollow' : 'Follow' ?></button>
+        </form>
+        <a href="?page=messages&with=<?= $pid ?>" class="gbtn gbtn-outline gbtn-sm">Message</a>
+      <?php endif; ?>
     </div>
   </div>
-  <?php else: ?>
-
-  <?php if (!$isSuspended): ?>
-  <div class="gcard">
-    <form method="post" enctype="multipart/form-data">
-      <input type="hidden" name="action" value="post">
-      <div class="composer-top">
-        <img src="<?= avatarSrc($u['avatar'], $u['display_name']) ?>" class="av40">
-        <textarea name="content" id="composerText" placeholder="Share what's on your mind…" rows="3"></textarea>
-      </div>
-      <div class="composer-actions">
-        <div class="composer-tools">
-          <label class="composer-tool" title="Add photo">
-            <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-            Photo<input type="file" name="image" accept="image/*" style="display:none" id="imgPick">
-          </label>
-          <span id="imgLabel" style="font-size:12px;color:var(--sub);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
-          <select name="visibility" class="vis-select">
-            <option value="public">&#127760; Public</option>
-            <option value="circles">&#9711; Circles</option>
-          </select>
-        </div>
-        <button class="gbtn gbtn-blue gbtn-sm" type="submit">Share</button>
-      </div>
-    </form>
-  </div>
-  <?php else: ?>
-  <div class="susp-banner gcard" style="margin-bottom:12px;padding:14px 18px;display:flex;align-items:flex-start;gap:10px;border-left:4px solid #dd4b39">
-    <svg viewBox="0 0 24 24" style="width:20px;height:20px;flex-shrink:0;margin-top:1px;fill:#dd4b39"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-    <div>
-      <div style="font-size:13px;font-weight:600;color:#c5221f;margin-bottom:3px">Your account is suspended</div>
-      <div style="font-size:12px;color:#c5221f;opacity:.85"><?= h($u['suspend_reason'] ?? 'Violation of community guidelines.') ?><?php if ($u['suspended_until']): ?> Lifts <?= date('M j, Y', strtotime($u['suspended_until'])) ?>.<?php endif; ?></div>
-    </div>
+  <?php if ($prof['bio']): ?><div style="padding:0 24px 12px;font-size:13px;color:#555;line-height:1.6"><?= h($prof['bio']) ?></div><?php endif; ?>
+  <?php if ($prof['location'] || $prof['website']): ?>
+  <div style="padding:0 24px 12px;display:flex;gap:16px;flex-wrap:wrap">
+    <?php if ($prof['location']): ?><span style="font-size:12px;color:var(--sub)">&#128205; <?= h($prof['location']) ?></span><?php endif; ?>
+    <?php if ($prof['website']): ?><a href="<?= h($prof['website']) ?>" target="_blank" style="font-size:12px">&#127760; <?= h($prof['website']) ?></a><?php endif; ?>
   </div>
   <?php endif; ?>
-  <?php endif; ?>
-
-  <?php if ($filterCircleId):
-    $activeCircle = null;
-    foreach ($myCircles as $mc) { if ((int)$mc['id'] === $filterCircleId) { $activeCircle = $mc; break; } }
-    if ($activeCircle): ?>
-  <div class="stream-filter-header" style="--filter-color:<?= h($activeCircle['color']) ?>">
-    <span class="filter-dot" style="background:<?= h($activeCircle['color']) ?>"></span>
-    <span class="filter-name"><?= h($activeCircle['name']) ?></span>
-    <span style="font-size:12px;color:var(--sub);margin-right:12px"><?= (int)$activeCircle['mc'] ?> <?= (int)$activeCircle['mc'] === 1 ? 'person' : 'people' ?></span>
-    <a href="?page=home" class="filter-clear">&#10005; All posts</a>
+  <div class="prof-stats">
+    <div class="prof-stat"><div class="n"><?= $postCount ?></div><div class="l">Posts</div></div>
+    <div class="prof-stat"><div class="n"><?= $followerCount ?></div><div class="l">Followers</div></div>
+    <div class="prof-stat"><div class="n"><?= $followingCount ?></div><div class="l">Following</div></div>
   </div>
-  <?php endif; endif; ?>
+  <div class="prof-tabs">
+    <a href="?page=profile&id=<?= $pid ?>&tab=posts" class="prof-tab <?= $profTab==='posts'?'active':'' ?>">Posts</a>
+    <a href="?page=profile&id=<?= $pid ?>&tab=about" class="prof-tab <?= $profTab==='about'?'active':'' ?>">About</a>
+    <?php if ($isOwn): ?><a href="?page=settings" class="prof-tab">Edit Profile</a><?php endif; ?>
+  </div>
+</div>
 
-  <?php if (empty($posts)): ?>
-    <?php if ($filterCircleId && isset($activeCircle)): ?>
-    <div class="gcard empty-state">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg>
-      <p>No posts from your <strong><?= h($activeCircle['name'] ?? '') ?></strong> circle yet.</p>
-      <a href="?page=circles" class="gbtn gbtn-blue gbtn-sm" style="margin-top:12px;display:inline-flex">Manage Circles</a>
-    </div>
-    <?php elseif ($u): ?>
-    <div class="gcard empty-state"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><p>Your stream is empty. Follow people to see their posts here.</p><a href="?page=people" class="gbtn gbtn-blue gbtn-sm" style="margin-top:12px;display:inline-flex">Find People</a></div>
-    <?php else: ?>
-    <div class="gcard empty-state"><p>No public posts yet.</p></div>
-    <?php endif; ?>
-  <?php endif; ?>
+<?php if ($profTab === 'about'): ?>
+<div class="gcard" style="padding:20px 24px">
+  <h3 style="font-size:15px;font-weight:500;margin-bottom:12px">About <?= h($prof['display_name']) ?></h3>
+  <?php if ($prof['bio']): ?><p style="font-size:13px;color:#555;line-height:1.7;margin-bottom:10px"><?= h($prof['bio']) ?></p><?php endif; ?>
+  <?php if ($prof['tagline']): ?><p style="font-size:13px;color:var(--sub)">&#8220;<?= h($prof['tagline']) ?>&#8221;</p><?php endif; ?>
+  <?php if ($prof['location']): ?><p style="font-size:13px;margin-top:8px">&#128205; <?= h($prof['location']) ?></p><?php endif; ?>
+  <?php if ($prof['website']): ?><p style="font-size:13px;margin-top:6px">&#127760; <a href="<?= h($prof['website']) ?>" target="_blank"><?= h($prof['website']) ?></a></p><?php endif; ?>
+  <p style="font-size:12px;color:#aaa;margin-top:12px">Joined <?= date('F Y', strtotime($prof['created_at'])) ?></p>
+</div>
 
-  <?php foreach ($posts as $post):
+<?php else:
+  $profPostStmt = getDB()->prepare("SELECT p.*,u.display_name,u.username,u.avatar,
+    (SELECT COUNT(*) FROM plusones WHERE post_id=COALESCE(p.original_post_id,p.id)) AS po_count,
+    (SELECT COUNT(*) FROM comments WHERE post_id=COALESCE(p.original_post_id,p.id)) AS cm_count,
+    (SELECT COUNT(*) FROM reshares WHERE post_id=COALESCE(p.original_post_id,p.id)) AS reshare_count" .
+    ($u ? ",(SELECT COUNT(*) FROM plusones WHERE post_id=COALESCE(p.original_post_id,p.id) AND user_id={$u['id']}) AS user_po" : ",0 AS user_po") .
+    " FROM posts p JOIN users u ON u.id=p.user_id WHERE p.user_id=? ORDER BY p.created_at DESC LIMIT 30");
+  $profPostStmt->execute([$pid]);
+  $profPosts = $profPostStmt->fetchAll();
+  if (empty($profPosts)): ?>
+<div class="gcard empty-state"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><p>No posts yet.</p></div>
+  <?php else: foreach ($profPosts as $post):
+    // FIX 3: Detect and render reshare posts on profile page
     $rootPostId = $post['original_post_id'] ? (int)$post['original_post_id'] : (int)$post['id'];
-    $origPost   = null;
+    $origPost = null;
     if ($post['original_post_id']) {
       $os = getDB()->prepare("SELECT p.*,u.display_name,u.username,u.avatar FROM posts p JOIN users u ON u.id=p.user_id WHERE p.id=?");
       $os->execute([$rootPostId]);
       $origPost = $os->fetch();
     }
-    $userReshared = $u ? userReshared($rootPostId, $u['id']) : false;
+    $userResharedProf = $u ? userReshared($rootPostId, $u['id']) : false;
   ?>
   <div class="gcard" id="post-card-<?= $post['id'] ?>">
     <?php if ($origPost): ?>
@@ -2351,8 +2281,8 @@ elseif ($page === 'home'):
     <div class="post-head">
       <a href="?page=profile&id=<?= $post['user_id'] ?>"><img src="<?= avatarSrc($post['avatar'], $post['display_name']) ?>" class="post-av"></a>
       <div class="post-meta">
-        <div class="post-author"><a href="?page=profile&id=<?= $post['user_id'] ?>"><?= h($post['display_name']) ?></a><?= userBadges($post) ?></div>
-        <div class="post-time"><?= timeAgo($post['created_at']) ?><span class="vis-chip"> &middot; &#127760; Public</span></div>
+        <div class="post-author"><a href="?page=profile&id=<?= $post['user_id'] ?>"><?= h($post['display_name']) ?></a></div>
+        <div class="post-time"><?= timeAgo($post['created_at']) ?></div>
       </div>
       <?php if ($u && ($post['user_id'] == $u['id'] || $u['role'] === 'admin')): ?>
       <form method="post" style="margin:0" onsubmit="return confirm('Delete this post?')">
@@ -2365,681 +2295,676 @@ elseif ($page === 'home'):
     <?php if ($post['content']): ?><div class="post-body"><?= h($post['content']) ?></div><?php endif; ?>
     <?php if ($post['image']): ?><img src="<?= h($post['image']) ?>" class="post-img"><div style="height:4px"></div><?php endif; ?>
     <?php endif; ?>
-
     <div class="post-bar">
-      <?php if ($u && !$isSuspended): ?>
+      <?php if ($u): ?>
         <button class="pbar-btn <?= $post['user_po'] ? 'plusoned' : '' ?>" onclick="plusOne(<?= $rootPostId ?>,this)">
           <svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>
-          +1 <span class="poc"><?= $post['po_count'] ?></span>
+          +1 <span><?= $post['po_count'] ?></span>
         </button>
         <div class="pbar-sep"></div>
         <button class="pbar-btn" onclick="toggleCmts(<?= $rootPostId ?>)">
           <svg viewBox="0 0 24 24"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/></svg>
           <?= $post['cm_count'] ?> Comment<?= $post['cm_count'] != 1 ? 's' : '' ?>
         </button>
-        <div class="pbar-sep"></div>
         <?php if ($post['user_id'] != $u['id'] && !$origPost): ?>
-        <div style="position:relative">
-          <button class="pbar-btn <?= $userReshared ? 'reshared' : '' ?>" onclick="toggleResharePopover(<?= $rootPostId ?>,this)" id="rsBtn-<?= $rootPostId ?>">
-            <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
-            Reshare <span class="rsc" id="rsc-<?= $rootPostId ?>"><?= $post['reshare_count'] > 0 ? $post['reshare_count'] : '' ?></span>
-          </button>
-        </div>
-        <?php elseif (!$origPost): ?>
-        <button class="pbar-btn" style="cursor:default;opacity:.5">
+        <div class="pbar-sep"></div>
+        <button class="pbar-btn <?= $userResharedProf ? 'reshared' : '' ?>" onclick="toggleResharePopover(<?= $rootPostId ?>,this)" id="rsBtn-<?= $rootPostId ?>">
           <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
-          <span class="rsc" id="rsc-<?= $rootPostId ?>"><?= $post['reshare_count'] > 0 ? $post['reshare_count'] : '' ?></span>
+          Reshare <span id="rsc-<?= $rootPostId ?>"><?= ($post['reshare_count'] ?? 0) > 0 ? $post['reshare_count'] : '' ?></span>
         </button>
         <?php endif; ?>
-        <?php if ($post['reshare_count'] > 0): ?>
-        <div class="pbar-sep"></div>
-        <button class="pbar-btn" onclick="openRipples(<?= $rootPostId ?>)" title="See who reshared">
-          <svg viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".6"/><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1" opacity=".3"/></svg>
-          Ripples
-        </button>
-        <?php endif; ?>
-        <?php if ($post['user_id'] != $u['id'] && !$origPost): ?>
-        <div class="pbar-sep"></div>
-        <form method="post" style="margin:0"><input type="hidden" name="action" value="follow"><input type="hidden" name="target_id" value="<?= $post['user_id'] ?>"><button class="pbar-btn" type="submit"><svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Follow</button></form>
-        <?php endif; ?>
-      <?php elseif ($u): ?>
-        <span style="font-size:13px;color:var(--sub);padding:8px 10px"><?= $post['po_count'] ?> +1s</span>
-      <?php else: ?>
-        <span style="font-size:13px;color:var(--sub);padding:8px 10px"><?= $post['po_count'] ?> +1s</span>
-        <a href="?page=login" class="gbtn gbtn-outline gbtn-sm" style="margin-left:auto">Sign in</a>
       <?php endif; ?>
     </div>
-
-    <?php if ($u && !$isSuspended): ?>
-    <div class="comments-area" id="cmts-<?= $rootPostId ?>" style="display:none">
-      <?php
-        $cs = getDB()->prepare("SELECT c.*,u.display_name,u.avatar FROM comments c JOIN users u ON u.id=c.user_id WHERE c.post_id=? ORDER BY c.created_at ASC");
-        $cs->execute([$rootPostId]);
-        foreach ($cs->fetchAll() as $cm):
-      ?>
-      <div class="cmt-item">
-        <img src="<?= avatarSrc($cm['avatar'], $cm['display_name']) ?>" class="cmt-av">
-        <div class="cmt-bubble">
-          <div class="cmt-name"><a href="?page=profile&id=<?= $cm['user_id'] ?>"><?= h($cm['display_name']) ?></a></div>
-          <div class="cmt-text"><?= h($cm['content']) ?></div>
-          <div class="cmt-time"><?= timeAgo($cm['created_at']) ?></div>
-        </div>
+    <div id="cmts-<?= $rootPostId ?>" style="display:none">
+      <?php $cq2 = getDB()->prepare("SELECT c.*,u.display_name,u.avatar FROM comments c JOIN users u ON u.id=c.user_id WHERE c.post_id=? ORDER BY c.created_at ASC"); $cq2->execute([$rootPostId]); $pc = $cq2->fetchAll(); ?>
+      <div class="comments-area">
+        <?php foreach ($pc as $cmt): ?>
+        <div class="cmt-item"><img src="<?= avatarSrc($cmt['avatar'], $cmt['display_name']) ?>" class="cmt-av"><div class="cmt-bubble"><div class="cmt-name"><?= h($cmt['display_name']) ?></div><div class="cmt-text"><?= h($cmt['content']) ?></div><div class="cmt-time"><?= timeAgo($cmt['created_at']) ?></div></div></div>
+        <?php endforeach; ?>
+        <?php if ($u): ?><form method="post" class="cmt-form"><input type="hidden" name="action" value="comment"><input type="hidden" name="post_id" value="<?= $rootPostId ?>"><img src="<?= avatarSrc($u['avatar'], $u['display_name']) ?>" class="av32"><input type="text" name="content" placeholder="Add a comment..." required><button class="gbtn gbtn-blue gbtn-sm">Post</button></form><?php endif; ?>
       </div>
-      <?php endforeach; ?>
-      <form method="post" class="cmt-form">
-        <input type="hidden" name="action" value="comment">
-        <input type="hidden" name="post_id" value="<?= $rootPostId ?>">
-        <img src="<?= avatarSrc($u['avatar'], $u['display_name']) ?>" class="cmt-av">
-        <input type="text" name="content" placeholder="Add a comment…" required>
-        <button class="gbtn gbtn-blue gbtn-sm">Post</button>
-      </form>
     </div>
-    <?php endif; ?>
   </div>
-  <?php endforeach; ?>
+  <?php endforeach; endif; ?>
+<?php endif; ?>
 </div>
 
-<div id="sidebar-right">
-  <?php if ($u && !empty($suggestions)): ?>
-  <div class="gcard"><div class="rsb-section">
-    <div class="rsb-title">People you may know</div>
-    <?php foreach ($suggestions as $sg): ?>
-    <div class="rsb-person">
-      <a href="?page=profile&id=<?= $sg['id'] ?>"><img src="<?= avatarSrc($sg['avatar'], $sg['display_name']) ?>" class="av40"></a>
-      <div class="rsb-person-info">
-        <div class="n"><a href="?page=profile&id=<?= $sg['id'] ?>" style="color:#212121"><?= h($sg['display_name']) ?></a></div>
-        <?php if ($sg['tagline']): ?><div class="t"><?= h($sg['tagline']) ?></div><?php endif; ?>
-      </div>
-      <form method="post" style="margin:0"><input type="hidden" name="action" value="follow"><input type="hidden" name="target_id" value="<?= $sg['id'] ?>"><button class="gbtn gbtn-outline gbtn-sm" style="padding:4px 10px;font-size:11px">+Follow</button></form>
-    </div>
-    <?php endforeach; ?>
-    <a href="?page=people" style="font-size:12px;color:var(--gblue)">View all people &rarr;</a>
-  </div></div>
-  <?php endif; ?>
-  <?php if (!$u): ?>
-  <div class="gcard"><div class="rsb-section">
-    <div class="rsb-title">Get Started</div>
-    <?php if (!$earlyAccess): ?><a href="?page=register" class="gbtn gbtn-blue" style="width:100%;justify-content:center;margin-bottom:6px">Create Account</a><?php endif; ?>
-    <a href="?page=login" class="gbtn gbtn-outline" style="width:100%;justify-content:center">Sign In</a>
-  </div></div>
-  <?php endif; ?>
-  <div class="gcard"><div class="rsb-section" style="font-size:11px;color:#aaa;line-height:1.8">
-    <?= SITE_NAME ?> v<?= VERSION ?> &middot; <a href="<?= GITHUB_URL ?>" target="_blank" style="color:#aaa">Open Source</a>
-  </div></div>
-</div>
-</div>
 <?php
+// ---- EXPLORE PAGE ----
 elseif ($page === 'explore'):
-  $stmt = getDB()->prepare("SELECT p.*,u.display_name,u.username,u.avatar,u.role,u.early_access,(SELECT COUNT(*) FROM plusones WHERE post_id=p.id) AS po_count,(SELECT COUNT(*) FROM comments WHERE post_id=p.id) AS cm_count,(SELECT COUNT(*) FROM plusones WHERE post_id=p.id AND user_id=?) AS user_po FROM posts p JOIN users u ON u.id=p.user_id WHERE p.visibility='public' AND p.community_id IS NULL ORDER BY p.created_at DESC LIMIT 60");
-  $stmt->execute([$u ? $u['id'] : 0]);
-  $posts = $stmt->fetchAll();
-?>
-<div id="wrap"><div id="stream" style="max-width:620px;margin:0 auto">
-  <div class="page-head"><h2>&#127760; Public Stream</h2></div>
-  <?php foreach ($posts as $post): ?>
-  <div class="gcard">
-    <div class="post-head">
-      <a href="?page=profile&id=<?= $post['user_id'] ?>"><img src="<?= avatarSrc($post['avatar'], $post['display_name']) ?>" class="post-av"></a>
-      <div class="post-meta">
-        <div class="post-author"><a href="?page=profile&id=<?= $post['user_id'] ?>"><?= h($post['display_name']) ?></a><?= userBadges($post) ?></div>
-        <div class="post-time"><?= timeAgo($post['created_at']) ?></div>
-      </div>
-    </div>
-    <?php if ($post['content']): ?><div class="post-body"><?= h($post['content']) ?></div><?php endif; ?>
-    <?php if ($post['image']): ?><img src="<?= h($post['image']) ?>" class="post-img"><?php endif; ?>
-    <div class="post-bar">
-      <?php if ($u): ?>
-      <button class="pbar-btn <?= $post['user_po'] ? 'plusoned' : '' ?>" onclick="plusOne(<?= $post['id'] ?>,this)"><svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>+1 <span class="poc"><?= $post['po_count'] ?></span></button>
-      <?php else: ?>
-      <span style="font-size:13px;color:var(--sub);padding:8px 10px"><?= $post['po_count'] ?> +1s</span>
-      <a href="?page=login" class="gbtn gbtn-outline gbtn-sm" style="margin-left:auto">Sign in</a>
-      <?php endif; ?>
-    </div>
-  </div>
-  <?php endforeach; ?>
-  <?php if (empty($posts)): ?><div class="gcard empty-state"><p>No public posts yet.</p></div><?php endif; ?>
-</div></div>
-
-<?php elseif ($page === 'profile'):
-  $pid   = isset($_GET['id']) ? (int)$_GET['id'] : ($u ? $u['id'] : 0);
-  $puser = $pid ? getDB()->query("SELECT * FROM users WHERE id=$pid")->fetch() : null;
-  if (!$puser) { echo '<div class="gcard" style="margin:32px auto;max-width:600px;padding:24px"><p>User not found.</p></div>'; }
-  else {
-    $isOwn          = $u && $u['id'] == $puser['id'];
-    $isFollowing    = $u ? (bool)getDB()->query("SELECT 1 FROM follows WHERE follower_id={$u['id']} AND following_id={$puser['id']}")->fetch() : false;
-    $followerCount  = getDB()->query("SELECT COUNT(*) FROM follows WHERE following_id={$puser['id']}")->fetchColumn();
-    $followingCount = getDB()->query("SELECT COUNT(*) FROM follows WHERE follower_id={$puser['id']}")->fetchColumn();
-    $postCount      = getDB()->query("SELECT COUNT(*) FROM posts WHERE user_id={$puser['id']}")->fetchColumn();
-    $userPoSql      = $u ? ",EXISTS(SELECT 1 FROM plusones WHERE post_id=p.id AND user_id={$u['id']}) user_po" : ",0 user_po";
-    $profilePosts   = getDB()->query("SELECT p.*,u.display_name,u.avatar,u.role,u.early_access,u.suspended,(SELECT COUNT(*) FROM plusones WHERE post_id=p.id) po_count{$userPoSql} FROM posts p JOIN users u ON p.user_id=u.id WHERE p.user_id={$puser['id']} AND p.community_id IS NULL ORDER BY p.created_at DESC LIMIT 30")->fetchAll();
-    $pSuspended     = isUserSuspended($puser);
-?>
-<div id="wrap" style="max-width:700px;margin:0 auto">
-  <?php if ($pSuspended && ($isOwn || ($u && $u['role']==='admin'))): ?>
-  <div style="background:#fce8e6;border:1px solid #dd4b39;border-radius:3px;padding:10px 14px;margin-bottom:14px;font-size:13px;color:#c5221f">
-    &#9888; <?= $isOwn ? 'Your account is currently suspended.' : 'This account is suspended.' ?>
-  </div>
-  <?php endif; ?>
-  <div class="gcard profile-card">
-    <div class="profile-cover" <?= $puser['cover'] ? 'style="background-image:url('.h($puser['cover']).');background-size:cover;background-position:center"' : '' ?>></div>
-    <div class="profile-av-wrap"><img src="<?= avatarSrc($puser['avatar'], $puser['display_name']) ?>" class="profile-av"></div>
-    <div class="profile-info">
-      <h2><?= h($puser['display_name']) ?><?= userBadges($puser) ?></h2>
-      <?php if ($puser['username']): ?><div class="profile-handle">@<?= h($puser['username']) ?></div><?php endif; ?>
-      <?php if ($puser['bio']): ?><div class="profile-bio"><?= h($puser['bio']) ?></div><?php endif; ?>
-      <div class="profile-stats">
-        <span><strong><?= $postCount ?></strong> Posts</span>
-        <span><strong><?= $followerCount ?></strong> Followers</span>
-        <span><strong><?= $followingCount ?></strong> Following</span>
-      </div>
-      <div class="profile-actions">
-        <?php if ($isOwn): ?>
-          <a href="?page=edit_profile" class="gbtn gbtn-outline">Edit Profile</a>
-        <?php elseif ($u): ?>
-          <?php if (!$pSuspended): ?><button class="gbtn gbtn-primary" onclick="toggleFollow(<?= $puser['id'] ?>,this)"><?= $isFollowing ? 'Unfollow' : 'Follow' ?></button><?php endif; ?>
-          <a href="?page=messages&with=<?= $puser['id'] ?>" class="gbtn gbtn-outline" style="font-size:12px">Message</a>
-        <?php else: ?>
-          <a href="?page=login" class="gbtn gbtn-primary">Follow</a>
-        <?php endif; ?>
-      </div>
-    </div>
-  </div>
-  <?php foreach ($profilePosts as $post): ?>
-  <div class="gcard">
-    <div class="post-head">
-      <img src="<?= avatarSrc($puser['avatar'], $puser['display_name']) ?>" class="post-av">
-      <div class="post-meta">
-        <div class="post-author"><?= h($puser['display_name']) ?><?= userBadges($puser) ?></div>
-        <div class="post-time"><?= timeAgo($post['created_at']) ?></div>
-      </div>
-      <?php if ($u && ($u['id'] == $post['user_id'] || $u['role'] === 'admin')): ?>
-      <form method="post" style="margin:0" onsubmit="return confirm('Delete?')"><input type="hidden" name="action" value="delete_post"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><button class="post-delete">&times;</button></form>
-      <?php endif; ?>
-    </div>
-    <?php if ($post['content']): ?><div class="post-body"><?= nl2br(h($post['content'])) ?></div><?php endif; ?>
-    <?php if ($post['image']): ?><img src="<?= h($post['image']) ?>" class="post-img"><?php endif; ?>
-    <div class="post-bar">
-      <?php if ($u && !isUserSuspended($u)): ?>
-      <button class="pbar-btn <?= $post['user_po'] ? 'plusoned' : '' ?>" onclick="plusOne(<?= $post['id'] ?>,this)"><svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>+1 <span class="poc"><?= $post['po_count'] ?></span></button>
-      <button class="pbar-btn" onclick="toggleCmts(<?= $post['id'] ?>)"><svg viewBox="0 0 24 24"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/></svg>Comment</button>
-      <?php else: ?>
-      <span style="font-size:13px;color:var(--sub);padding:8px 10px"><?= $post['po_count'] ?> +1s</span>
-      <?php endif; ?>
-    </div>
-    <div class="comments-area" id="cmts-<?= $post['id'] ?>" style="display:none">
-      <?php $cs = getDB()->prepare("SELECT c.*,u.display_name,u.avatar FROM comments c JOIN users u ON u.id=c.user_id WHERE c.post_id=? ORDER BY c.created_at ASC"); $cs->execute([$post['id']]); foreach ($cs->fetchAll() as $cm): ?>
-      <div class="cmt-item"><img src="<?= avatarSrc($cm['avatar'],$cm['display_name']) ?>" class="cmt-av"><div class="cmt-bubble"><div class="cmt-name"><a href="?page=profile&id=<?= $cm['user_id'] ?>"><?= h($cm['display_name']) ?></a></div><div class="cmt-text"><?= h($cm['content']) ?></div><div class="cmt-time"><?= timeAgo($cm['created_at']) ?></div></div></div>
-      <?php endforeach; ?>
-      <?php if ($u && !isUserSuspended($u)): ?>
-      <form method="post" class="cmt-form"><input type="hidden" name="action" value="comment"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><img src="<?= avatarSrc($u['avatar'],$u['display_name']) ?>" class="cmt-av"><input type="text" name="content" placeholder="Add a comment…" required><button class="gbtn gbtn-blue gbtn-sm">Post</button></form>
-      <?php endif; ?>
-    </div>
-  </div>
-  <?php endforeach; ?>
-  <?php if (empty($profilePosts)): ?><div class="gcard empty-state"><p>No posts yet.</p></div><?php endif; ?>
-</div>
-<?php } ?>
-
-<?php elseif ($page === 'edit_profile'):
   requireLogin();
-?>
-<div id="wrap" style="max-width:600px;margin:0 auto">
-  <div class="gcard" style="padding:24px">
-    <h3 style="margin:0 0 20px;font-size:18px;font-weight:400">Edit Profile</h3>
-    <form method="post" enctype="multipart/form-data">
-      <input type="hidden" name="action" value="update_profile">
-      <div class="form-group"><label>Display Name</label><input type="text" name="display_name" value="<?= h($u['display_name']) ?>" maxlength="60"></div>
-      <div class="form-group"><label>Bio</label><textarea name="bio" rows="3" maxlength="200"><?= h($u['bio'] ?? '') ?></textarea></div>
-      <div class="form-group"><label>Tagline</label><input type="text" name="tagline" value="<?= h($u['tagline'] ?? '') ?>" maxlength="80"></div>
-      <div class="form-group"><label>Location</label><input type="text" name="location" value="<?= h($u['location'] ?? '') ?>" maxlength="100"></div>
-      <div class="form-group"><label>Website</label><input type="url" name="website" value="<?= h($u['website'] ?? '') ?>"></div>
-      <div class="form-group"><label>Avatar Photo</label><input type="file" name="avatar" accept="image/*"></div>
-      <div class="form-group"><label>Cover Photo</label><input type="file" name="cover" accept="image/*"></div>
-      <button class="gbtn gbtn-blue" type="submit">Save Changes</button>
-      <a href="?page=profile&id=<?= $u['id'] ?>" class="gbtn gbtn-outline" style="margin-left:8px">Cancel</a>
-    </form>
-  </div>
-</div>
+  $exploreQ = getDB()->query("SELECT p.*,u.display_name,u.username,u.avatar,
+    (SELECT COUNT(*) FROM plusones WHERE post_id=p.id) AS po_count,
+    (SELECT COUNT(*) FROM comments WHERE post_id=p.id) AS cm_count
+    FROM posts p JOIN users u ON u.id=p.user_id
+    WHERE p.visibility='public' AND p.community_id IS NULL AND p.original_post_id IS NULL
+    ORDER BY p.created_at DESC LIMIT 40");
+  $explorePosts = $exploreQ->fetchAll();
 
-<?php elseif ($page === 'people'):
-  $search = trim($_GET['q'] ?? '');
-  if ($search) {
-    $stmt = getDB()->prepare("SELECT * FROM users WHERE (display_name LIKE ? OR username LIKE ?) AND role!='admin' ORDER BY display_name LIMIT 40");
-    $stmt->execute(["%$search%", "%$search%"]);
-  } else {
-    $stmt = getDB()->query("SELECT * FROM users WHERE role!='admin' ORDER BY id DESC LIMIT 40");
-  }
-  $people = $stmt->fetchAll();
-  $myFollowing = $u ? getDB()->query("SELECT following_id FROM follows WHERE follower_id={$u['id']}")->fetchAll(PDO::FETCH_COLUMN) : [];
+  $communities = getDB()->query("SELECT c.*,
+    (SELECT COUNT(*) FROM community_members WHERE community_id=c.id) AS mc
+    FROM communities c WHERE c.visibility='public' ORDER BY mc DESC LIMIT 8")->fetchAll();
 ?>
-<div id="wrap" style="max-width:700px;margin:0 auto">
-  <div class="page-head"><h2>&#128100; People</h2></div>
-  <div class="people-grid">
-    <?php foreach ($people as $p): $pSusp = isUserSuspended($p); ?>
-    <div class="gcard people-card">
-      <a href="?page=profile&id=<?= $p['id'] ?>"><img src="<?= avatarSrc($p['avatar'], $p['display_name']) ?>" class="people-av"></a>
-      <div class="people-info">
-        <a href="?page=profile&id=<?= $p['id'] ?>"><strong><?= h($p['display_name']) ?></strong><?= userBadges($p) ?></a>
-        <?php if ($p['username']): ?><div style="font-size:13px;color:var(--sub)">@<?= h($p['username']) ?></div><?php endif; ?>
-        <?php if ($p['bio']): ?><div style="font-size:13px;margin-top:4px"><?= h(mb_substr($p['bio'],0,80)) ?></div><?php endif; ?>
-      </div>
-      <?php if ($u && $u['id'] != $p['id'] && !$pSusp): ?>
-      <button class="gbtn gbtn-primary gbtn-sm" onclick="toggleFollow(<?= $p['id'] ?>,this)"><?= in_array($p['id'], $myFollowing) ? 'Unfollow' : 'Follow' ?></button>
-      <?php endif; ?>
-    </div>
-    <?php endforeach; ?>
-    <?php if (empty($people)): ?><div class="gcard empty-state" style="grid-column:1/-1"><p>No members found.</p></div><?php endif; ?>
-  </div>
-</div>
+<div id="wrap">
+  <div class="page-head"><h2>&#127760; Explore</h2></div>
 
-<?php
-elseif ($page === 'communities'):
-  $comms   = getDB()->query("SELECT c.*,u.display_name AS owner_name,(SELECT COUNT(*) FROM community_members WHERE community_id=c.id) AS mc FROM communities c JOIN users u ON u.id=c.owner_id WHERE c.visibility='public' ORDER BY mc DESC,c.created_at DESC")->fetchAll();
-  $myComms = $u ? getDB()->query("SELECT community_id FROM community_members WHERE user_id={$u['id']}")->fetchAll(PDO::FETCH_COLUMN) : [];
-?>
-<div id="wrap" style="max-width:800px;margin:0 auto">
-  <div class="page-head">
-    <h2>&#127758; Communities</h2>
-    <?php if ($u && !isUserSuspended($u)): ?>
-    <button class="gbtn gbtn-blue gbtn-sm" onclick="document.getElementById('newCommModal').classList.add('open')">+ Create</button>
-    <?php endif; ?>
-  </div>
-  <div class="comm-grid">
-    <?php foreach ($comms as $c):
-      $isMember = in_array($c['id'], $myComms);
-      $bgStyle  = $c['banner_image'] ? '' : ('background:' . h($c['color']) . ';');
-      $hasIconImg = !empty($c['icon_image']);
-    ?>
-    <div class="comm-card <?= $hasIconImg ? 'comm-card-has-icon' : '' ?>">
-      <a href="?page=community&id=<?= $c['id'] ?>">
-        <div class="comm-cover-strip" style="<?= $bgStyle ?>">
-          <?php if ($c['banner_image']): ?><img src="<?= h($c['banner_image']) ?>" class="comm-banner-img"><?php endif; ?>
-          <?php if ($hasIconImg): ?>
-            <div class="comm-icon-img-wrap"><img src="<?= h($c['icon_image']) ?>" alt=""></div>
-          <?php else: ?>
+  <?php if (!empty($communities)): ?>
+  <div class="gcard" style="margin-bottom:16px">
+    <div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;color:#555">Communities</div>
+    <div class="comm-grid" style="padding:14px 16px">
+      <?php foreach ($communities as $c):
+        $hasBanner = !empty($c['banner_image']) || !empty($c['banner_color']);
+        $bannerStyle = $c['banner_image'] ? '' : ('background:'.h($c['banner_color'] ?: $c['color']));
+        $iconImage = $c['icon_image'] ?? '';
+        $hasIconImg = !empty($iconImage);
+      ?>
+      <a href="?page=community&id=<?= $c['id'] ?>" style="text-decoration:none">
+        <div class="comm-card <?= $hasIconImg ? 'comm-card-has-icon' : '' ?>">
+          <div class="comm-cover-strip" style="<?= $bannerStyle ?>">
+            <?php if ($c['banner_image']): ?><img src="<?= h($c['banner_image']) ?>" class="comm-banner-img"><?php endif; ?>
+            <?php if ($hasIconImg): ?>
+            <div class="comm-icon-img-wrap"><img src="<?= h($iconImage) ?>" alt=""></div>
+            <?php else: ?>
             <span class="comm-icon-overlay"><?= h($c['icon'] ?? '🌐') ?></span>
-          <?php endif; ?>
+            <?php endif; ?>
+          </div>
+          <div class="comm-body">
+            <div class="comm-name"><?= h($c['name']) ?></div>
+            <div class="comm-members"><?= (int)$c['mc'] ?> member<?= $c['mc'] != 1 ? 's' : '' ?></div>
+          </div>
         </div>
       </a>
-      <div class="comm-body">
-        <div class="comm-name"><a href="?page=community&id=<?= $c['id'] ?>" style="color:var(--text)"><?= h($c['name']) ?></a></div>
-        <div class="comm-members"><?= $c['mc'] ?> member<?= $c['mc'] != 1 ? 's' : '' ?></div>
-        <?php if ($u && !isUserSuspended($u)): ?>
-        <form method="post" style="margin-top:8px">
-          <input type="hidden" name="action" value="join_community">
-          <input type="hidden" name="community_id" value="<?= $c['id'] ?>">
-          <button class="gbtn gbtn-sm <?= $isMember ? 'gbtn-outline' : 'gbtn-blue' ?>"><?= $isMember ? '✓ Joined' : 'Join' ?></button>
-        </form>
-        <?php endif; ?>
-      </div>
-    </div>
-    <?php endforeach; ?>
-  </div>
-</div>
-
-<?php if ($u && !isUserSuspended($u)): ?>
-<div class="hz-modal-bg" id="newCommModal" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="hz-modal" style="width:480px;max-width:95vw">
-    <h3>Create a Community</h3>
-    <form method="post" enctype="multipart/form-data">
-      <input type="hidden" name="action" value="create_community">
-      <div class="form-row"><label>Name</label><input type="text" name="name" required placeholder="Community name"></div>
-      <div class="form-row"><label>Description</label><textarea name="description" rows="2" placeholder="What's this community about?"></textarea></div>
-      <div class="form-row">
-        <label>Icon emoji</label>
-        <div class="icon-picker" id="iconPicker">
-          <?php foreach ($COMM_ICONS as $ico): ?>
-          <div class="icon-opt" onclick="selectIcon('<?= $ico ?>',this)"><?= $ico ?></div>
-          <?php endforeach; ?>
-        </div>
-        <input type="hidden" name="icon" id="iconVal" value="🌐">
-      </div>
-      <div class="form-row">
-        <label>Color</label>
-        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px">
-          <?php foreach ($COMM_COLORS as $col): ?>
-          <span class="cswatch" style="background:<?= $col ?>" onclick="selectCommColor('<?= $col ?>',this)" title="<?= $col ?>"></span>
-          <?php endforeach; ?>
-        </div>
-        <input type="hidden" name="color" id="commColorVal" value="#4285f4">
-      </div>
-      <div class="hz-modal-footer">
-        <button type="button" class="gbtn gbtn-outline" onclick="document.getElementById('newCommModal').classList.remove('open')">Cancel</button>
-        <button class="gbtn gbtn-blue" type="submit">Create</button>
-      </div>
-    </form>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php elseif ($page === 'community'):
-  $cid  = (int)($_GET['id'] ?? 0);
-  $comm = $cid ? getDB()->query("SELECT c.*,u.display_name AS owner_name FROM communities c JOIN users u ON u.id=c.owner_id WHERE c.id=$cid")->fetch() : null;
-  if (!$comm) { echo '<div class="gcard" style="margin:32px auto;max-width:600px;padding:24px"><p>Community not found.</p></div>'; }
-  else {
-    $memberCount = getDB()->query("SELECT COUNT(*) FROM community_members WHERE community_id=$cid")->fetchColumn();
-    $isMember    = $u ? (bool)getDB()->query("SELECT 1 FROM community_members WHERE community_id=$cid AND user_id={$u['id']}")->fetch() : false;
-    $isOwner     = $u && ($u['id'] == $comm['owner_id'] || $u['role'] === 'admin');
-    $posts       = getDB()->query("SELECT p.*,u.display_name,u.avatar,u.role,u.early_access,(SELECT COUNT(*) FROM plusones WHERE post_id=p.id) po_count,(SELECT COUNT(*) FROM comments WHERE post_id=p.id) cm_count FROM posts p JOIN users u ON u.id=p.user_id WHERE p.community_id=$cid ORDER BY p.created_at DESC LIMIT 50")->fetchAll();
-    $bannerStyle = $comm['banner_image'] ? 'background-image:url('.h($comm['banner_image']).');background-size:cover;background-position:center' : ($comm['banner_color'] ? 'background:'.$comm['banner_color'] : 'background:'.$comm['color']);
-    $hasIconImg  = !empty($comm['icon_image']);
-?>
-<div id="wrap" style="max-width:700px;margin:0 auto">
-  <div class="gcard" style="overflow:visible;position:relative">
-    <div class="prof-cover" style="<?= $bannerStyle ?>">
-      <div class="comm-detail-icon-wrap">
-        <?php if ($hasIconImg): ?>
-          <img src="<?= h($comm['icon_image']) ?>" alt="">
-        <?php else: ?>
-          <div class="comm-icon-fallback" style="background:<?= h($comm['color']) ?>"><?= h($comm['icon'] ?? '🌐') ?></div>
-        <?php endif; ?>
-      </div>
-    </div>
-    <div class="prof-head" style="margin-top:-20px">
-      <div style="width:<?= $hasIconImg ? '80px' : '64px' ?>"></div><!-- spacer for the icon -->
-      <div class="prof-info">
-        <h2><?= h($comm['name']) ?></h2>
-        <?php if ($comm['description']): ?><div class="tagline"><?= h($comm['description']) ?></div><?php endif; ?>
-        <div style="font-size:12px;color:var(--sub);margin-top:4px"><?= $memberCount ?> member<?= $memberCount!=1?'s':'' ?> &middot; by <?= h($comm['owner_name']) ?></div>
-      </div>
-      <div class="prof-actions">
-        <?php if ($u && !isUserSuspended($u)): ?>
-        <form method="post" style="margin:0"><input type="hidden" name="action" value="join_community"><input type="hidden" name="community_id" value="<?= $cid ?>"><button class="gbtn <?= $isMember ? 'gbtn-outline' : 'gbtn-blue' ?>"><?= $isMember ? '✓ Joined' : 'Join' ?></button></form>
-        <?php endif; ?>
-        <?php if ($isOwner): ?><a href="?page=edit_community&id=<?= $cid ?>" class="gbtn gbtn-outline gbtn-sm">Edit</a><?php endif; ?>
-      </div>
+      <?php endforeach; ?>
     </div>
   </div>
-
-  <?php if ($u && ($isMember || $isOwner) && !isUserSuspended($u)): ?>
-  <div class="gcard"><form method="post" enctype="multipart/form-data">
-    <input type="hidden" name="action" value="community_post">
-    <input type="hidden" name="community_id" value="<?= $cid ?>">
-    <div class="composer-top"><img src="<?= avatarSrc($u['avatar'], $u['display_name']) ?>" class="av40"><textarea name="content" placeholder="Share something with <?= h($comm['name']) ?>…" rows="2"></textarea></div>
-    <div class="composer-actions">
-      <label class="composer-tool"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>Photo<input type="file" name="image" accept="image/*" style="display:none"></label>
-      <button class="gbtn gbtn-blue gbtn-sm" type="submit">Post</button>
-    </div>
-  </form></div>
   <?php endif; ?>
 
-  <?php foreach ($posts as $post): ?>
+  <?php foreach ($explorePosts as $post): ?>
   <div class="gcard">
     <div class="post-head">
       <a href="?page=profile&id=<?= $post['user_id'] ?>"><img src="<?= avatarSrc($post['avatar'], $post['display_name']) ?>" class="post-av"></a>
       <div class="post-meta">
-        <div class="post-author"><a href="?page=profile&id=<?= $post['user_id'] ?>"><?= h($post['display_name']) ?></a><?= userBadges($post) ?></div>
+        <div class="post-author"><a href="?page=profile&id=<?= $post['user_id'] ?>"><?= h($post['display_name']) ?></a></div>
         <div class="post-time"><?= timeAgo($post['created_at']) ?></div>
       </div>
-      <?php if ($u && ($u['id']==$post['user_id'] || $u['role']==='admin')): ?>
-      <form method="post" onsubmit="return confirm('Delete?')"><input type="hidden" name="action" value="delete_post"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><button class="post-delete">&times;</button></form>
-      <?php endif; ?>
     </div>
     <?php if ($post['content']): ?><div class="post-body"><?= h($post['content']) ?></div><?php endif; ?>
-    <?php if ($post['image']): ?><img src="<?= h($post['image']) ?>" class="post-img"><?php endif; ?>
+    <?php if ($post['image']): ?><img src="<?= h($post['image']) ?>" class="post-img"><div style="height:4px"></div><?php endif; ?>
     <div class="post-bar">
-      <?php if ($u && !isUserSuspended($u)): ?>
-      <button class="pbar-btn" onclick="plusOne(<?= $post['id'] ?>,this)"><svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>+1 <span class="poc"><?= $post['po_count'] ?></span></button>
-      <button class="pbar-btn" onclick="toggleCmts(<?= $post['id'] ?>)"><svg viewBox="0 0 24 24"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/></svg><?= $post['cm_count'] ?></button>
-      <?php else: ?>
-      <span style="font-size:13px;color:var(--sub);padding:8px 10px"><?= $post['po_count'] ?> +1s</span>
-      <?php endif; ?>
-    </div>
-    <div class="comments-area" id="cmts-<?= $post['id'] ?>" style="display:none">
-      <?php $cs2 = getDB()->prepare("SELECT c.*,u.display_name,u.avatar FROM comments c JOIN users u ON u.id=c.user_id WHERE c.post_id=? ORDER BY c.created_at ASC"); $cs2->execute([$post['id']]); foreach ($cs2->fetchAll() as $cm): ?>
-      <div class="cmt-item"><img src="<?= avatarSrc($cm['avatar'],$cm['display_name']) ?>" class="cmt-av"><div class="cmt-bubble"><div class="cmt-name"><a href="?page=profile&id=<?= $cm['user_id'] ?>"><?= h($cm['display_name']) ?></a></div><div class="cmt-text"><?= h($cm['content']) ?></div><div class="cmt-time"><?= timeAgo($cm['created_at']) ?></div></div></div>
-      <?php endforeach; ?>
-      <?php if ($u && !isUserSuspended($u)): ?>
-      <form method="post" class="cmt-form"><input type="hidden" name="action" value="comment"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><img src="<?= avatarSrc($u['avatar'],$u['display_name']) ?>" class="cmt-av"><input type="text" name="content" placeholder="Comment…" required><button class="gbtn gbtn-blue gbtn-sm">Post</button></form>
-      <?php endif; ?>
+      <span class="pbar-btn" style="cursor:default"><svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg> <?= $post['po_count'] ?></span>
+      <div class="pbar-sep"></div>
+      <span class="pbar-btn" style="cursor:default"><svg viewBox="0 0 24 24"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/></svg> <?= $post['cm_count'] ?></span>
     </div>
   </div>
   <?php endforeach; ?>
-  <?php if (empty($posts)): ?><div class="gcard empty-state"><p>No posts yet. Be the first!</p></div><?php endif; ?>
 </div>
-<?php } ?>
 
-<?php elseif ($page === 'edit_community'):
+<?php
+// ---- PEOPLE PAGE ----
+elseif ($page === 'people'):
   requireLogin();
-  $cid  = (int)($_GET['id'] ?? 0);
-  $comm = $cid ? getDB()->query("SELECT * FROM communities WHERE id=$cid")->fetch() : null;
-  if (!$comm || ($comm['owner_id'] != $u['id'] && $u['role'] !== 'admin')) { redirect('?page=communities'); }
+  $peopleQ = getDB()->prepare("SELECT u.*,
+    (SELECT COUNT(*) FROM follows WHERE following_id=u.id) AS follower_count,
+    (SELECT COUNT(*) FROM follows WHERE follower_id=? AND following_id=u.id) AS i_follow
+    FROM users u WHERE u.id!=? AND u.suspended=0 ORDER BY follower_count DESC, u.display_name ASC LIMIT 60");
+  $peopleQ->execute([$u['id'], $u['id']]);
+  $people = $peopleQ->fetchAll();
 ?>
-<div id="wrap" style="max-width:600px;margin:0 auto">
-  <div class="gcard" style="padding:24px">
-    <h3 style="margin:0 0 20px;font-size:18px;font-weight:400">Edit Community</h3>
-    <form method="post" enctype="multipart/form-data">
-      <input type="hidden" name="action" value="edit_community">
-      <input type="hidden" name="community_id" value="<?= $cid ?>">
-      <div class="form-row"><label>Name</label><input type="text" name="name" value="<?= h($comm['name']) ?>" required></div>
-      <div class="form-row"><label>Description</label><textarea name="description" rows="3"><?= h($comm['description'] ?? '') ?></textarea></div>
-      <div class="form-row">
-        <label>Banner Image</label>
-        <div class="banner-preview-box" id="bannerPreviewBox" style="<?= $comm['banner_image'] ? '' : 'background:'.$comm['color'] ?>">
-          <?php if ($comm['banner_image']): ?><img src="<?= h($comm['banner_image']) ?>" id="bannerPreviewImg"><?php else: ?><div class="banner-preview-bg" id="bannerPreviewBg" style="background:<?= h($comm['color']) ?>"><span style="font-size:42px;opacity:.4">🖼</span></div><?php endif; ?>
-        </div>
-        <label class="banner-upload-label"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M21 15v4H3v-4H1v4a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2v-4h-2zM17 8l-1.41-1.41L13 9.17V2h-2v7.17L8.41 6.59 7 8l5 5 5-5z"/></svg> Upload banner<input type="file" name="banner_image" accept="image/*" style="display:none"></label>
-        <?php if ($comm['banner_image']): ?><label><input type="checkbox" name="clear_banner_image" value="1"> Remove banner image</label><?php endif; ?>
+<div id="wrap">
+  <div class="page-head"><h2>&#128101; People</h2></div>
+  <div class="gcard">
+    <div class="people-grid" style="padding:16px">
+      <?php foreach ($people as $p): ?>
+      <div class="pcard">
+        <a href="?page=profile&id=<?= $p['id'] ?>"><img src="<?= avatarSrc($p['avatar'], $p['display_name']) ?>" class="people-av" style="margin:0 auto"></a>
+        <div class="pname"><a href="?page=profile&id=<?= $p['id'] ?>" style="color:#212121"><?= h($p['display_name']) ?></a></div>
+        <div class="ptag">@<?= h($p['username']) ?></div>
+        <?php if ($p['tagline']): ?><div style="font-size:11px;color:var(--sub);margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><?= h($p['tagline']) ?></div><?php endif; ?>
+        <form method="post" style="margin:0">
+          <input type="hidden" name="action" value="<?= $p['i_follow'] ? 'unfollow' : 'follow' ?>">
+          <input type="hidden" name="target_id" value="<?= $p['id'] ?>">
+          <button class="gbtn <?= $p['i_follow'] ? 'gbtn-outline' : 'gbtn-blue' ?> gbtn-sm" style="width:100%"><?= $p['i_follow'] ? 'Following' : 'Follow' ?></button>
+        </form>
       </div>
-      <div class="form-row">
-        <label>Community Color</label>
-        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px">
-          <?php foreach ($COMM_COLORS as $col): ?>
-          <span class="cswatch" style="background:<?= $col ?>;<?= $col===$comm['color']?'border-color:#333;':'border-color:transparent;' ?>" onclick="selectCommColor('<?= $col ?>',this)" title="<?= $col ?>"></span>
-          <?php endforeach; ?>
-        </div>
-        <input type="hidden" name="color" id="commColorVal" value="<?= h($comm['color']) ?>">
-      </div>
-      <div class="form-row">
-        <label>Icon (emoji)</label>
-        <div class="icon-picker" id="iconPicker">
-          <?php foreach ($COMM_ICONS as $ico): ?>
-          <div class="icon-opt <?= $ico===($comm['icon']??'🌐')?'sel':'' ?>" onclick="selectIcon('<?= $ico ?>',this)"><?= $ico ?></div>
-          <?php endforeach; ?>
-        </div>
-        <input type="hidden" name="icon" id="iconVal" value="<?= h($comm['icon'] ?? '🌐') ?>">
-      </div>
-      <div class="form-row">
-        <label>Icon Image (optional, replaces emoji)</label>
-        <div class="icon-image-upload-area">
-          <div class="icon-img-preview" id="iconImgPreview">
-            <?php if (!empty($comm['icon_image'])): ?><img src="<?= h($comm['icon_image']) ?>" id="iconImgPreviewImg"><?php else: ?><span><?= h($comm['icon'] ?? '🌐') ?></span><?php endif; ?>
-          </div>
-          <label class="icon-upload-btn"><svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M21 15v4H3v-4H1v4a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2v-4h-2zM17 8l-1.41-1.41L13 9.17V2h-2v7.17L8.41 6.59 7 8l5 5 5-5z"/></svg> Upload icon<input type="file" name="icon_image" accept="image/*" style="display:none" onchange="previewIconImg(event)"></label>
-          <?php if (!empty($comm['icon_image'])): ?><label style="font-size:12px;color:#888;cursor:pointer"><input type="checkbox" name="clear_icon_image" value="1"> Remove</label><?php endif; ?>
-        </div>
-      </div>
-      <div class="hz-modal-footer" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
-        <a href="?page=community&id=<?= $cid ?>" class="gbtn gbtn-outline">Cancel</a>
-        <button class="gbtn gbtn-blue" type="submit">Save Changes</button>
-      </div>
-    </form>
+      <?php endforeach; ?>
+    </div>
   </div>
 </div>
 
-<?php elseif ($page === 'messages'):
+<?php
+// ---- COMMUNITIES PAGE ----
+elseif ($page === 'communities'):
   requireLogin();
-  $withId   = (int)($_GET['with'] ?? 0);
-  $withUser = $withId ? getDB()->query("SELECT * FROM users WHERE id=$withId")->fetch() : null;
+  $myComms = getDB()->prepare("SELECT c.*,(SELECT COUNT(*) FROM community_members WHERE community_id=c.id) AS mc FROM communities c JOIN community_members cm ON cm.community_id=c.id WHERE cm.user_id=? ORDER BY c.name ASC");
+  $myComms->execute([$u['id']]);
+  $myComms = $myComms->fetchAll();
 
-  if ($withUser) {
-    getDB()->prepare("UPDATE messages SET is_read=1 WHERE to_id=? AND from_id=?")->execute([$u['id'], $withId]);
-  }
+  $allComms = getDB()->query("SELECT c.*,(SELECT COUNT(*) FROM community_members WHERE community_id=c.id) AS mc FROM communities c WHERE c.visibility='public' ORDER BY mc DESC")->fetchAll();
 
-  // people we've had convos with
-  $convos = getDB()->prepare("SELECT DISTINCT u.id, u.display_name, u.avatar, u.tagline, MAX(m.created_at) last_msg,
-    (SELECT COUNT(*) FROM messages WHERE to_id=? AND from_id=u.id AND is_read=0) unread
-    FROM messages m JOIN users u ON (u.id = CASE WHEN m.from_id=? THEN m.to_id ELSE m.from_id END)
-    WHERE m.from_id=? OR m.to_id=?
-    GROUP BY u.id ORDER BY last_msg DESC LIMIT 20");
-  $convos->execute([$u['id'], $u['id'], $u['id'], $u['id']]);
-  $convos = $convos->fetchAll();
-
-  if ($withUser) {
-    $msgs = getDB()->prepare("SELECT * FROM messages WHERE (from_id=? AND to_id=?) OR (from_id=? AND to_id=?) ORDER BY created_at ASC");
-    $msgs->execute([$u['id'], $withId, $withId, $u['id']]);
-    $msgs = $msgs->fetchAll();
-  } else {
-    $msgs = [];
+  $createError = '';
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'create_community') {
+    $cname = trim($_POST['cname'] ?? '');
+    $cdesc = trim($_POST['cdesc'] ?? '');
+    $cvis  = ($_POST['cvis'] ?? 'public') === 'private' ? 'private' : 'public';
+    $cicon = $_POST['cicon'] ?? '🌐';
+    $ccolor = $_POST['ccolor'] ?? '#4285f4';
+    if (!$cname) { $createError = 'Name is required.'; }
+    else {
+      try {
+        getDB()->prepare("INSERT INTO communities (owner_id,name,description,visibility,icon,color) VALUES (?,?,?,?,?,?)")
+               ->execute([$u['id'], $cname, $cdesc, $cvis, $cicon, $ccolor]);
+        $newId = getDB()->lastInsertId();
+        getDB()->prepare("INSERT INTO community_members (community_id,user_id,role) VALUES (?,?,'owner')")->execute([$newId, $u['id']]);
+        redirect("?page=community&id=$newId");
+      } catch (Exception $e) { $createError = 'A community with that name already exists.'; }
+    }
   }
 ?>
 <div id="wrap">
-  <div class="gcard msg-layout">
-    <div>
-      <div class="conv-list-header">Messages</div>
-      <?php foreach ($convos as $cv): ?>
-      <a class="conv-item <?= $withId==$cv['id']?'active':'' ?>" href="?page=messages&with=<?= $cv['id'] ?>">
-        <img src="<?= avatarSrc($cv['avatar'], $cv['display_name']) ?>" class="conv-av">
-        <div class="conv-name"><?= h($cv['display_name']) ?></div>
-        <?php if ($cv['unread']): ?><span class="tnb" style="position:static"><?= $cv['unread'] ?></span><?php endif; ?>
+  <div class="page-head">
+    <h2>&#128205; Communities</h2>
+    <button class="gbtn gbtn-blue gbtn-sm" onclick="document.getElementById('createCommModal').classList.add('open')">+ New Community</button>
+  </div>
+
+  <?php if (!empty($myComms)): ?>
+  <div class="gcard" style="margin-bottom:16px">
+    <div style="padding:12px 16px;font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)">Your Communities</div>
+    <div class="comm-grid" style="padding:14px 16px">
+      <?php foreach ($myComms as $c):
+        $bannerStyle = $c['banner_image'] ? '' : ('background:'.h($c['banner_color'] ?: $c['color']));
+        $iconImage = $c['icon_image'] ?? '';
+        $hasIconImg = !empty($iconImage);
+      ?>
+      <a href="?page=community&id=<?= $c['id'] ?>" style="text-decoration:none">
+        <div class="comm-card <?= $hasIconImg ? 'comm-card-has-icon' : '' ?>">
+          <div class="comm-cover-strip" style="<?= $bannerStyle ?>">
+            <?php if ($c['banner_image']): ?><img src="<?= h($c['banner_image']) ?>" class="comm-banner-img"><?php endif; ?>
+            <?php if ($hasIconImg): ?><div class="comm-icon-img-wrap"><img src="<?= h($iconImage) ?>" alt=""></div>
+            <?php else: ?><span class="comm-icon-overlay"><?= h($c['icon'] ?? '🌐') ?></span><?php endif; ?>
+          </div>
+          <div class="comm-body"><div class="comm-name"><?= h($c['name']) ?></div><div class="comm-members"><?= (int)$c['mc'] ?> member<?= $c['mc'] != 1 ? 's' : '' ?></div></div>
+        </div>
       </a>
       <?php endforeach; ?>
-      <?php if (empty($convos)): ?><div style="padding:20px;font-size:13px;color:var(--sub);text-align:center">No messages yet.</div><?php endif; ?>
     </div>
-    <?php if ($withUser): ?>
-    <div>
-      <div class="chat-header">
-        <img src="<?= avatarSrc($withUser['avatar'], $withUser['display_name']) ?>" class="av32">
-        <a href="?page=profile&id=<?= $withUser['id'] ?>" style="font-size:14px;font-weight:500;color:#212121"><?= h($withUser['display_name']) ?></a>
-      </div>
-      <div class="chat-window" id="chatWin">
-        <?php foreach ($msgs as $m): $isMe = ($m['from_id'] == $u['id']); ?>
-        <div style="display:flex;flex-direction:column;align-items:<?= $isMe?'flex-end':'flex-start' ?>">
-          <div class="bubble <?= $isMe?'bubble-me':'bubble-them' ?>"><?= h($m['content']) ?></div>
-          <div class="bubble-time" style="padding:0 6px"><?= timeAgo($m['created_at']) ?></div>
-        </div>
-        <?php endforeach; ?>
-        <?php if (empty($msgs)): ?><div style="margin:auto;font-size:13px;color:var(--sub)">Start the conversation!</div><?php endif; ?>
-      </div>
-      <form method="post" class="chat-input-row">
-        <input type="hidden" name="action" value="send_message">
-        <input type="hidden" name="to_id" value="<?= $withId ?>">
-        <input type="text" name="content" placeholder="Message <?= h($withUser['display_name']) ?>…" autocomplete="off" required autofocus>
-        <button class="gbtn gbtn-blue gbtn-sm">Send</button>
-      </form>
-    </div>
+  </div>
+  <?php endif; ?>
+
+  <div class="gcard">
+    <div style="padding:12px 16px;font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)">All Communities</div>
+    <?php if (empty($allComms)): ?>
+    <div class="empty-state"><p>No communities yet. Create the first one!</p></div>
     <?php else: ?>
-    <div style="display:flex;align-items:center;justify-content:center;color:var(--sub);font-size:14px">Select a conversation, or go to someone's profile to start one.</div>
+    <div class="comm-grid" style="padding:14px 16px">
+      <?php foreach ($allComms as $c):
+        $bannerStyle = $c['banner_image'] ? '' : ('background:'.h($c['banner_color'] ?: $c['color']));
+        $iconImage = $c['icon_image'] ?? '';
+        $hasIconImg = !empty($iconImage);
+      ?>
+      <a href="?page=community&id=<?= $c['id'] ?>" style="text-decoration:none">
+        <div class="comm-card <?= $hasIconImg ? 'comm-card-has-icon' : '' ?>">
+          <div class="comm-cover-strip" style="<?= $bannerStyle ?>">
+            <?php if ($c['banner_image']): ?><img src="<?= h($c['banner_image']) ?>" class="comm-banner-img"><?php endif; ?>
+            <?php if ($hasIconImg): ?><div class="comm-icon-img-wrap"><img src="<?= h($iconImage) ?>" alt=""></div>
+            <?php else: ?><span class="comm-icon-overlay"><?= h($c['icon'] ?? '🌐') ?></span><?php endif; ?>
+          </div>
+          <div class="comm-body"><div class="comm-name"><?= h($c['name']) ?></div><div class="comm-members"><?= (int)$c['mc'] ?> member<?= $c['mc'] != 1 ? 's' : '' ?></div></div>
+        </div>
+      </a>
+      <?php endforeach; ?>
+    </div>
     <?php endif; ?>
   </div>
 </div>
-<script>
-// scroll chat to bottom on load
-var cw = document.getElementById('chatWin');
-if (cw) cw.scrollTop = cw.scrollHeight;
-</script>
 
-<?php elseif ($page === 'notifications'):
-  requireLogin();
-  $notifs = getDB()->prepare("SELECT n.*,u.display_name,u.avatar FROM notifications n JOIN users u ON u.id=n.from_user_id WHERE n.user_id=? ORDER BY n.created_at DESC LIMIT 60");
-  $notifs->execute([$u['id']]);
-  $notifs = $notifs->fetchAll();
-?>
-<div id="wrap" style="max-width:640px;margin:0 auto">
-  <div class="page-head">
-    <h2>&#128276; Notifications</h2>
-    <form method="post"><input type="hidden" name="action" value="mark_notifs"><button class="gbtn gbtn-outline gbtn-sm">Mark all read</button></form>
-  </div>
-  <div class="gcard">
-    <?php foreach ($notifs as $n): ?>
-    <div class="notif-item <?= $n['is_read']?'':'unread' ?>">
-      <a href="?page=profile&id=<?= $n['from_user_id'] ?>"><img src="<?= avatarSrc($n['avatar'], $n['display_name']) ?>" class="notif-av"></a>
-      <div class="notif-msg"><?= h($n['message']) ?></div>
-      <div class="notif-time"><?= timeAgo($n['created_at']) ?></div>
-    </div>
-    <?php endforeach; ?>
-    <?php if (empty($notifs)): ?><div class="empty-state"><p>No notifications yet.</p></div><?php endif; ?>
+<div class="hz-modal-bg" id="createCommModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="hz-modal" style="width:420px">
+    <h3>Create a Community</h3>
+    <?php if ($createError): ?><div style="background:#fce8e6;color:#c5221f;padding:10px;border-radius:3px;font-size:13px;margin-bottom:12px"><?= h($createError) ?></div><?php endif; ?>
+    <form method="post">
+      <input type="hidden" name="action" value="create_community">
+      <div class="form-row"><label>Name</label><input type="text" name="cname" placeholder="Community name" required></div>
+      <div class="form-row"><label>Description</label><textarea name="cdesc" rows="2" placeholder="What's this community about?"></textarea></div>
+      <div class="form-row"><label>Visibility</label><select name="cvis"><option value="public">Public</option><option value="private">Private</option></select></div>
+      <div class="form-row"><label>Icon</label>
+        <div class="icon-picker">
+          <?php foreach (['🌐','💬','🎮','🎵','🎨','📚','🏃','🍕','✈️','🔬','💻','🎭','🌿','⚽','🎯','🌟'] as $ico): ?>
+          <div class="icon-opt <?= $ico==='🌐'?'sel':'' ?>" onclick="this.closest('.icon-picker').querySelectorAll('.icon-opt').forEach(x=>x.classList.remove('sel'));this.classList.add('sel');this.closest('form').querySelector('[name=cicon]').value=this.textContent"><?= $ico ?></div>
+          <?php endforeach; ?>
+        </div>
+        <input type="hidden" name="cicon" value="🌐">
+      </div>
+      <div class="hz-modal-footer">
+        <button type="button" class="gbtn gbtn-outline" onclick="document.getElementById('createCommModal').classList.remove('open')">Cancel</button>
+        <button class="gbtn gbtn-blue">Create</button>
+      </div>
+    </form>
   </div>
 </div>
 
-<?php elseif ($page === 'admin'):
-  requireAdmin();
-  $adminTab = $_GET['tab'] ?? 'users';
-  $stats = [
-    'users'   => getDB()->query("SELECT COUNT(*) FROM users")->fetchColumn(),
-    'posts'   => getDB()->query("SELECT COUNT(*) FROM posts")->fetchColumn(),
-    'comms'   => getDB()->query("SELECT COUNT(*) FROM communities")->fetchColumn(),
-    'online'  => getDB()->query("SELECT COUNT(*) FROM users WHERE last_login > datetime('now','-1 hour')")->fetchColumn(),
-  ];
-  $users = getDB()->query("SELECT * FROM users ORDER BY id DESC")->fetchAll();
-?>
-<div id="wrap" style="max-width:900px;margin:0 auto">
-  <h2 style="margin:0 0 12px;font-size:22px;font-weight:400">&#128737; Admin Panel</h2>
-  <?php if ($error): ?><div class="admin-err"><?= h($error) ?></div><?php endif; ?>
-  <?php if ($success): ?><div class="admin-success"><?= h($success) ?></div><?php endif; ?>
+<?php
+// ---- COMMUNITY DETAIL PAGE ----
+elseif ($page === 'community'):
+  requireLogin();
+  $cid = (int)($_GET['id'] ?? 0);
+  $comm = getDB()->prepare("SELECT * FROM communities WHERE id=?")->execute([$cid]) ? getDB()->query("SELECT * FROM communities WHERE id=$cid")->fetch() : null;
+  if (!$comm) { echo '<div id="wrap"><div class="gcard empty-state"><p>Community not found.</p></div></div>'; goto END_OUTPUT; }
 
-  <div class="stat-row">
-    <div class="sbox"><div class="n"><?= $stats['users'] ?></div><div class="l">Users</div></div>
-    <div class="sbox"><div class="n"><?= $stats['posts'] ?></div><div class="l">Posts</div></div>
-    <div class="sbox"><div class="n"><?= $stats['comms'] ?></div><div class="l">Communities</div></div>
-    <div class="sbox"><div class="n" style="color:var(--ggreen)"><?= $stats['online'] ?></div><div class="l">Active (1h)</div></div>
+  $isMember = (bool)getDB()->query("SELECT id FROM community_members WHERE community_id=$cid AND user_id={$u['id']}")->fetch();
+  $isOwner  = $comm['owner_id'] == $u['id'];
+  $memberCount = (int)getDB()->query("SELECT COUNT(*) FROM community_members WHERE community_id=$cid")->fetchColumn();
+
+  $commPosts = getDB()->query("SELECT p.*,u.display_name,u.username,u.avatar,
+    (SELECT COUNT(*) FROM plusones WHERE post_id=p.id) AS po_count,
+    (SELECT COUNT(*) FROM comments WHERE post_id=p.id) AS cm_count
+    FROM posts p JOIN users u ON u.id=p.user_id WHERE p.community_id=$cid ORDER BY p.created_at DESC LIMIT 30")->fetchAll();
+
+  $bannerStyle = $comm['banner_image'] ? '' : ('background:'.h($comm['banner_color'] ?: $comm['color']));
+  $iconImage = $comm['icon_image'] ?? '';
+  $hasIconImg = !empty($iconImage);
+?>
+<div id="wrap">
+<div class="gcard" style="margin-bottom:12px;overflow:hidden">
+  <div style="height:160px;position:relative;<?= $bannerStyle ?>">
+    <?php if ($comm['banner_image']): ?><img src="<?= h($comm['banner_image']) ?>" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0"><?php endif; ?>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.5))"></div>
+    <?php if ($hasIconImg): ?><div class="comm-detail-icon-wrap"><img src="<?= h($iconImage) ?>" alt=""></div>
+    <?php else: ?><div class="comm-detail-icon-wrap"><div class="comm-icon-fallback"><?= h($comm['icon'] ?? '🌐') ?></div></div><?php endif; ?>
   </div>
+  <div style="padding:<?= $hasIconImg ? '52px' : '20px' ?> 24px 16px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <h2 style="font-size:22px;font-weight:400"><?= h($comm['name']) ?></h2>
+        <div style="font-size:13px;color:var(--sub);margin-top:4px"><?= $memberCount ?> member<?= $memberCount != 1 ? 's' : '' ?></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <?php if ($isOwner): ?>
+          <a href="?page=edit_community&id=<?= $cid ?>" class="gbtn gbtn-outline gbtn-sm">Edit</a>
+        <?php endif; ?>
+        <form method="post" style="margin:0">
+          <input type="hidden" name="action" value="<?= $isMember ? 'leave_community' : 'join_community' ?>">
+          <input type="hidden" name="community_id" value="<?= $cid ?>">
+          <button class="gbtn <?= $isMember ? 'gbtn-outline' : 'gbtn-blue' ?> gbtn-sm"><?= $isMember ? 'Leave' : 'Join' ?></button>
+        </form>
+      </div>
+    </div>
+    <?php if ($comm['description']): ?><p style="font-size:13px;color:#555;margin-top:10px;line-height:1.6"><?= h($comm['description']) ?></p><?php endif; ?>
+  </div>
+</div>
+
+<?php if ($isMember): ?>
+<div class="gcard" style="margin-bottom:12px">
+  <form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="action" value="post">
+    <input type="hidden" name="community_id" value="<?= $cid ?>">
+    <div class="composer-top">
+      <img src="<?= avatarSrc($u['avatar'], $u['display_name']) ?>" class="av40">
+      <textarea name="content" placeholder="Share something with this community…" rows="3"></textarea>
+    </div>
+    <div class="composer-actions">
+      <div class="composer-tools"><label class="composer-tool"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>Photo<input type="file" name="image" accept="image/*" style="display:none"></label></div>
+      <button class="gbtn gbtn-blue gbtn-sm">Post</button>
+    </div>
+  </form>
+</div>
+<?php endif; ?>
+
+<?php foreach ($commPosts as $post): ?>
+<div class="gcard">
+  <div class="post-head">
+    <a href="?page=profile&id=<?= $post['user_id'] ?>"><img src="<?= avatarSrc($post['avatar'], $post['display_name']) ?>" class="post-av"></a>
+    <div class="post-meta">
+      <div class="post-author"><a href="?page=profile&id=<?= $post['user_id'] ?>"><?= h($post['display_name']) ?></a></div>
+      <div class="post-time"><?= timeAgo($post['created_at']) ?></div>
+    </div>
+    <?php if ($u && ($post['user_id'] == $u['id'] || $u['role'] === 'admin' || $isOwner)): ?>
+    <form method="post" style="margin:0" onsubmit="return confirm('Delete?')">
+      <input type="hidden" name="action" value="delete_post">
+      <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+      <button class="post-delete">&times;</button>
+    </form>
+    <?php endif; ?>
+  </div>
+  <?php if ($post['content']): ?><div class="post-body"><?= h($post['content']) ?></div><?php endif; ?>
+  <?php if ($post['image']): ?><img src="<?= h($post['image']) ?>" class="post-img"><div style="height:4px"></div><?php endif; ?>
+  <div class="post-bar">
+    <button class="pbar-btn" onclick="plusOne(<?= $post['id'] ?>,this)"><svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>+1 <?= $post['po_count'] ?></button>
+    <div class="pbar-sep"></div>
+    <button class="pbar-btn" onclick="toggleCmts(<?= $post['id'] ?>)"><svg viewBox="0 0 24 24"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/></svg><?= $post['cm_count'] ?> Comment<?= $post['cm_count']!=1?'s':'' ?></button>
+  </div>
+  <div id="cmts-<?= $post['id'] ?>" style="display:none">
+    <?php $cq3 = getDB()->prepare("SELECT c.*,u.display_name,u.avatar FROM comments c JOIN users u ON u.id=c.user_id WHERE c.post_id=? ORDER BY c.created_at ASC"); $cq3->execute([$post['id']]); $cc = $cq3->fetchAll(); ?>
+    <div class="comments-area">
+      <?php foreach ($cc as $cmt): ?><div class="cmt-item"><img src="<?= avatarSrc($cmt['avatar'], $cmt['display_name']) ?>" class="cmt-av"><div class="cmt-bubble"><div class="cmt-name"><?= h($cmt['display_name']) ?></div><div class="cmt-text"><?= h($cmt['content']) ?></div><div class="cmt-time"><?= timeAgo($cmt['created_at']) ?></div></div></div><?php endforeach; ?>
+      <?php if ($isMember): ?><form method="post" class="cmt-form"><input type="hidden" name="action" value="comment"><input type="hidden" name="post_id" value="<?= $post['id'] ?>"><img src="<?= avatarSrc($u['avatar'], $u['display_name']) ?>" class="av32"><input type="text" name="content" placeholder="Add a comment..." required><button class="gbtn gbtn-blue gbtn-sm">Post</button></form><?php endif; ?>
+    </div>
+  </div>
+</div>
+<?php endforeach; ?>
+</div>
+
+<?php
+// ---- MESSAGES PAGE ----
+elseif ($page === 'messages'):
+  requireLogin();
+  $withId = (int)($_GET['with'] ?? 0);
+
+  // Mark messages as read if viewing a conversation
+  if ($withId) {
+    getDB()->prepare("UPDATE messages SET is_read=1 WHERE to_id=? AND from_id=?")->execute([$u['id'], $withId]);
+  }
+
+  // Get conversation list
+  $convQ = getDB()->query("SELECT DISTINCT
+    CASE WHEN m.from_id={$u['id']} THEN m.to_id ELSE m.from_id END AS other_id,
+    MAX(m.created_at) AS last_msg
+    FROM messages m WHERE m.from_id={$u['id']} OR m.to_id={$u['id']}
+    GROUP BY other_id ORDER BY last_msg DESC LIMIT 30");
+  $conversations = $convQ->fetchAll();
+
+  // Get messages in current conversation
+  $chatMessages = [];
+  $chatWith = null;
+  if ($withId) {
+    $cwQ = getDB()->prepare("SELECT * FROM users WHERE id=?");
+    $cwQ->execute([$withId]);
+    $chatWith = $cwQ->fetch();
+    if ($chatWith) {
+      $msgsQ = getDB()->prepare("SELECT * FROM messages WHERE (from_id=? AND to_id=?) OR (from_id=? AND to_id=?) ORDER BY created_at ASC LIMIT 100");
+      $msgsQ->execute([$u['id'], $withId, $withId, $u['id']]);
+      $chatMessages = $msgsQ->fetchAll();
+    }
+  }
+?>
+<div id="wrap">
+  <div class="page-head"><h2>&#128172; Messages</h2></div>
+  <div class="gcard">
+    <div class="msg-layout">
+      <div>
+        <div class="conv-list-header">Conversations</div>
+        <?php if (empty($conversations)): ?>
+        <div style="padding:20px 16px;font-size:13px;color:var(--sub);text-align:center">No messages yet.</div>
+        <?php endif; ?>
+        <?php foreach ($conversations as $conv):
+          $othQ = getDB()->prepare("SELECT id,display_name,username,avatar FROM users WHERE id=?");
+          $othQ->execute([$conv['other_id']]);
+          $other = $othQ->fetch();
+          if (!$other) continue;
+        ?>
+        <a href="?page=messages&with=<?= $other['id'] ?>" class="conv-item <?= $withId == $other['id'] ? 'active' : '' ?>">
+          <img src="<?= avatarSrc($other['avatar'], $other['display_name']) ?>" class="conv-av">
+          <div class="conv-name"><?= h($other['display_name']) ?></div>
+        </a>
+        <?php endforeach; ?>
+      </div>
+      <div>
+        <?php if ($chatWith): ?>
+        <div class="chat-header">
+          <img src="<?= avatarSrc($chatWith['avatar'], $chatWith['display_name']) ?>" class="av40">
+          <div>
+            <div style="font-size:14px;font-weight:500"><?= h($chatWith['display_name']) ?></div>
+            <div style="font-size:12px;color:var(--sub)">@<?= h($chatWith['username']) ?></div>
+          </div>
+        </div>
+        <div class="chat-window" id="chatWindow">
+          <?php foreach ($chatMessages as $msg): $isMe = $msg['from_id'] == $u['id']; ?>
+          <div style="display:flex;flex-direction:column;align-items:<?= $isMe ? 'flex-end' : 'flex-start' ?>">
+            <div class="bubble <?= $isMe ? 'bubble-me' : 'bubble-them' ?>"><?= h($msg['content']) ?></div>
+            <div class="bubble-time" style="font-size:10px;color:var(--sub);margin:2px 4px"><?= timeAgo($msg['created_at']) ?></div>
+          </div>
+          <?php endforeach; ?>
+          <?php if (empty($chatMessages)): ?><div style="text-align:center;color:var(--sub);font-size:13px;margin-top:40px">Start the conversation!</div><?php endif; ?>
+        </div>
+        <div class="chat-input-row">
+          <form method="post" style="display:flex;gap:8px;flex:1">
+            <input type="hidden" name="action" value="send_message">
+            <input type="hidden" name="to_id" value="<?= $withId ?>">
+            <input type="text" name="content" placeholder="Type a message…" required style="flex:1;border:1px solid var(--border);border-radius:20px;padding:8px 14px;font-size:13px;outline:none">
+            <button class="gbtn gbtn-blue gbtn-sm">Send</button>
+          </form>
+        </div>
+        <?php else: ?>
+        <div style="display:flex;align-items:center;justify-content:center;height:300px;color:var(--sub);font-size:14px">
+          Select a conversation or <a href="?page=people" style="margin-left:4px">find people to message</a>.
+        </div>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</div>
+<script>var cw=document.getElementById('chatWindow');if(cw)cw.scrollTop=cw.scrollHeight;</script>
+
+<?php
+// ---- NOTIFICATIONS PAGE ----
+elseif ($page === 'notifications'):
+  requireLogin();
+  getDB()->prepare("UPDATE notifications SET is_read=1 WHERE user_id=?")->execute([$u['id']]);
+  $notifsQ = getDB()->prepare("SELECT n.*,u.display_name,u.username,u.avatar FROM notifications n JOIN users u ON u.id=n.from_user_id WHERE n.user_id=? ORDER BY n.created_at DESC LIMIT 50");
+  $notifsQ->execute([$u['id']]);
+  $notifs = $notifsQ->fetchAll();
+?>
+<div id="wrap">
+  <div class="page-head"><h2>&#128276; Notifications</h2></div>
+  <div class="gcard">
+    <?php if (empty($notifs)): ?>
+    <div class="empty-state"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6V11c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 1 0-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg><p>No notifications yet.</p></div>
+    <?php endif; ?>
+    <?php foreach ($notifs as $n): ?>
+    <div class="notif-item <?= !$n['is_read'] ? 'unread' : '' ?>">
+      <a href="?page=profile&id=<?= $n['from_user_id'] ?>"><img src="<?= avatarSrc($n['avatar'], $n['display_name']) ?>" class="notif-av"></a>
+      <div class="notif-msg">
+        <strong><?= h($n['display_name']) ?></strong>
+        <?php
+          if ($n['type'] === 'follow')   echo ' started following you.';
+          elseif ($n['type'] === 'plusone')  echo ' +1\'d your post.';
+          elseif ($n['type'] === 'comment')  echo ' commented: ' . h(substr($n['message'], 0, 80));
+          elseif ($n['type'] === 'reshare')  echo ' reshared your post.';
+          else echo ' ' . h($n['message']);
+        ?>
+      </div>
+      <div class="notif-time"><?= timeAgo($n['created_at']) ?></div>
+    </div>
+    <?php endforeach; ?>
+  </div>
+</div>
+
+<?php
+// ---- SETTINGS PAGE ----
+elseif ($page === 'settings'):
+  requireLogin();
+  $settingsSuccess = '';
+  $settingsError = '';
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'update_profile') {
+    $dn  = trim($_POST['display_name'] ?? '');
+    $bio = trim($_POST['bio'] ?? '');
+    $tag = trim($_POST['tagline'] ?? '');
+    $loc = trim($_POST['location'] ?? '');
+    $web = trim($_POST['website'] ?? '');
+    if (!$dn) { $settingsError = 'Display name is required.'; }
+    else {
+      $newAv = $u['avatar'];
+      $newCov = $u['cover'];
+      if (!empty($_FILES['avatar']['name'])) { $newAv = uploadFile($_FILES['avatar'], 'av_') ?: $newAv; }
+      if (!empty($_FILES['cover']['name']))  { $newCov = uploadFile($_FILES['cover'], 'cov_') ?: $newCov; }
+      getDB()->prepare("UPDATE users SET display_name=?,bio=?,tagline=?,location=?,website=?,avatar=?,cover=? WHERE id=?")
+             ->execute([$dn, $bio, $tag, $loc, $web, $newAv, $newCov, $u['id']]);
+      $settingsSuccess = 'Profile updated!';
+      // Refresh user
+      $su = getDB()->prepare("SELECT * FROM users WHERE id=?"); $su->execute([$u['id']]); $u = $su->fetch();
+    }
+    if ($_POST['new_password'] ?? '') {
+      if ($_POST['new_password'] !== ($_POST['confirm_password'] ?? '')) { $settingsError = 'Passwords do not match.'; }
+      elseif (strlen($_POST['new_password']) < 6) { $settingsError = 'Password must be at least 6 characters.'; }
+      else {
+        getDB()->prepare("UPDATE users SET password=? WHERE id=?")->execute([password_hash($_POST['new_password'], PASSWORD_DEFAULT), $u['id']]);
+        $settingsSuccess = 'Password updated!';
+      }
+    }
+  }
+?>
+<div id="wrap">
+  <div class="page-head"><h2>&#9881; Settings</h2></div>
+  <?php if ($settingsSuccess): ?><div class="alert-success">&#10003; <?= h($settingsSuccess) ?></div><?php endif; ?>
+  <?php if ($settingsError): ?><div class="gcard" style="padding:12px 16px;background:#fce8e6;color:#c5221f;border-left:3px solid #dd4b39;font-size:13px;margin-bottom:12px"><?= h($settingsError) ?></div><?php endif; ?>
+  <div class="gcard" style="padding:24px">
+    <form method="post" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="update_profile">
+      <div class="cfgrid">
+        <div>
+          <h3 style="font-size:15px;font-weight:500;margin-bottom:16px">Profile</h3>
+          <div class="form-row"><label>Display Name</label><input type="text" name="display_name" value="<?= h($u['display_name']) ?>" required></div>
+          <div class="form-row"><label>Bio</label><textarea name="bio" rows="3"><?= h($u['bio']) ?></textarea></div>
+          <div class="form-row"><label>Tagline</label><input type="text" name="tagline" value="<?= h($u['tagline']) ?>" placeholder="A short tagline…"></div>
+          <div class="form-row"><label>Location</label><input type="text" name="location" value="<?= h($u['location']) ?>"></div>
+          <div class="form-row"><label>Website</label><input type="url" name="website" value="<?= h($u['website']) ?>"></div>
+        </div>
+        <div>
+          <h3 style="font-size:15px;font-weight:500;margin-bottom:16px">Photos</h3>
+          <div class="form-row">
+            <label>Profile Photo</label>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:6px">
+              <img src="<?= avatarSrc($u['avatar'], $u['display_name']) ?>" style="width:56px;height:56px;border-radius:50%;object-fit:cover">
+              <input type="file" name="avatar" accept="image/*" style="font-size:13px">
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Cover Photo</label>
+            <input type="file" name="cover" accept="image/*" style="font-size:13px;margin-top:6px">
+          </div>
+          <h3 style="font-size:15px;font-weight:500;margin:16px 0">Change Password</h3>
+          <div class="form-row"><label>New Password</label><input type="password" name="new_password" placeholder="Leave blank to keep current"></div>
+          <div class="form-row"><label>Confirm Password</label><input type="password" name="confirm_password"></div>
+        </div>
+      </div>
+      <div style="text-align:right;margin-top:8px">
+        <button class="gbtn gbtn-blue">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<?php
+// ---- ADMIN PAGE ----
+elseif ($page === 'admin'):
+  requireAdmin();
+  $adminTab  = $_GET['tab'] ?? 'overview';
+  $adminMsg  = '';
+  $adminErr  = '';
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $act = $_POST['action'] ?? '';
+    if ($act === 'admin_delete_user') {
+      $uid = (int)$_POST['uid'];
+      if ($uid != $u['id']) { getDB()->prepare("DELETE FROM users WHERE id=?")->execute([$uid]); $adminMsg = 'User deleted.'; }
+    } elseif ($act === 'admin_suspend_user') {
+      $uid = (int)$_POST['uid']; $reason = trim($_POST['reason'] ?? ''); $until = $_POST['until'] ?? null;
+      suspendUser($uid, $reason, $until ?: null); $adminMsg = 'User suspended.';
+    } elseif ($act === 'admin_unsuspend_user') {
+      $uid = (int)$_POST['uid']; unsuspendUser($uid); $adminMsg = 'User unsuspended.';
+    } elseif ($act === 'admin_delete_post') {
+      $pid = (int)$_POST['pid']; getDB()->prepare("DELETE FROM posts WHERE id=?")->execute([$pid]); $adminMsg = 'Post deleted.';
+    } elseif ($act === 'admin_toggle_ea') {
+      $cur = getSetting('early_access_mode'); setSetting('early_access_mode', $cur === '1' ? '0' : '1');
+      $adminMsg = 'Early access mode ' . ($cur === '1' ? 'disabled' : 'enabled') . '.';
+    } elseif ($act === 'admin_toggle_maint') {
+      $cur = getSetting('maintenance_mode'); setSetting('maintenance_mode', $cur === '1' ? '0' : '1');
+      $adminMsg = 'Maintenance mode ' . ($cur === '1' ? 'disabled' : 'enabled') . '.';
+    } elseif ($act === 'admin_grant_ea') {
+      $uid = (int)$_POST['uid']; getDB()->prepare("UPDATE users SET early_access=1 WHERE id=?")->execute([$uid]); $adminMsg = 'Early access granted.';
+    } elseif ($act === 'admin_create_user') {
+      $adn = trim($_POST['adn'] ?? ''); $aun = trim($_POST['aun'] ?? ''); $aem = trim($_POST['aem'] ?? ''); $apw = trim($_POST['apw'] ?? ''); $arl = $_POST['arl'] ?? 'user';
+      if (!$adn || !$aun || !$aem || !$apw) { $adminErr = 'All fields required.'; }
+      else {
+        try {
+          getDB()->prepare("INSERT INTO users (display_name,username,email,password,role,tos_accepted,early_access) VALUES (?,?,?,?,?,1,1)")
+                 ->execute([$adn, $aun, $aem, password_hash($apw, PASSWORD_DEFAULT), $arl]);
+          $adminMsg = 'User created.';
+        } catch (Exception $e) { $adminErr = 'Username or email already exists.'; }
+      }
+    }
+  }
+  $totalUsers = (int)getDB()->query("SELECT COUNT(*) FROM users")->fetchColumn();
+  $totalPosts = (int)getDB()->query("SELECT COUNT(*) FROM posts")->fetchColumn();
+  $totalComms = (int)getDB()->query("SELECT COUNT(*) FROM communities")->fetchColumn();
+  $totalFollows = (int)getDB()->query("SELECT COUNT(*) FROM follows")->fetchColumn();
+  $eaMode = isEarlyAccess(); $maintMode = isMaintenanceMode();
+?>
+<div id="wrap">
+  <div class="page-head"><h2>&#9737; Admin Panel</h2></div>
+  <?php if ($adminMsg): ?><div class="admin-success">&#10003; <?= h($adminMsg) ?></div><?php endif; ?>
+  <?php if ($adminErr): ?><div class="admin-err">&#10007; <?= h($adminErr) ?></div><?php endif; ?>
 
   <div class="admin-tabs">
-    <a href="?page=admin&tab=users"    class="admin-tab <?= $adminTab==='users'?'active':'' ?>">Users</a>
+    <a href="?page=admin&tab=overview" class="admin-tab <?= $adminTab==='overview'?'active':'' ?>">Overview</a>
+    <a href="?page=admin&tab=users" class="admin-tab <?= $adminTab==='users'?'active':'' ?>">Users</a>
+    <a href="?page=admin&tab=posts" class="admin-tab <?= $adminTab==='posts'?'active':'' ?>">Posts</a>
     <a href="?page=admin&tab=settings" class="admin-tab <?= $adminTab==='settings'?'active':'' ?>">Settings</a>
-    <a href="?page=admin&tab=create"   class="admin-tab <?= $adminTab==='create'?'active':'' ?>">Create User</a>
   </div>
 
-  <?php if ($adminTab === 'users'): ?>
+  <?php if ($adminTab === 'overview'): ?>
+  <div class="stat-row">
+    <div class="sbox"><div class="n"><?= $totalUsers ?></div><div class="l">Users</div></div>
+    <div class="sbox"><div class="n"><?= $totalPosts ?></div><div class="l">Posts</div></div>
+    <div class="sbox"><div class="n"><?= $totalComms ?></div><div class="l">Communities</div></div>
+    <div class="sbox"><div class="n"><?= $totalFollows ?></div><div class="l">Follows</div></div>
+  </div>
+
+  <?php elseif ($adminTab === 'users'): ?>
+  <div class="gcard" style="margin-bottom:16px;padding:20px 24px">
+    <h3 style="font-size:14px;font-weight:600;margin-bottom:14px">Create User</h3>
+    <form method="post">
+      <input type="hidden" name="action" value="admin_create_user">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:end">
+        <div><label style="font-size:11px;color:var(--sub);display:block;margin-bottom:4px">Display Name</label><input type="text" name="adn" placeholder="Display Name" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:2px;font-size:13px;outline:none"></div>
+        <div><label style="font-size:11px;color:var(--sub);display:block;margin-bottom:4px">Username</label><input type="text" name="aun" placeholder="username" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:2px;font-size:13px;outline:none"></div>
+        <div><label style="font-size:11px;color:var(--sub);display:block;margin-bottom:4px">Email</label><input type="email" name="aem" placeholder="email@example.com" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:2px;font-size:13px;outline:none"></div>
+        <div><label style="font-size:11px;color:var(--sub);display:block;margin-bottom:4px">Password</label><input type="password" name="apw" placeholder="Password" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:2px;font-size:13px;outline:none"></div>
+        <button class="gbtn gbtn-blue gbtn-sm" style="white-space:nowrap">Create</button>
+      </div>
+    </form>
+  </div>
   <div class="gcard">
     <table class="admin-table">
-      <thead><tr><th>User</th><th>Role</th><th>Last Login</th><th>Status</th><th>Actions</th></tr></thead>
+      <thead><tr><th>User</th><th>Role</th><th>Joined</th><th>Actions</th></tr></thead>
       <tbody>
-      <?php foreach ($users as $tu):
-        $susp = isUserSuspended($tu);
-      ?>
+      <?php $usersAll = getDB()->query("SELECT * FROM users ORDER BY created_at DESC")->fetchAll(); foreach ($usersAll as $au): ?>
       <tr>
         <td>
-          <div style="display:flex;align-items:center;gap:9px">
-            <img src="<?= avatarSrc($tu['avatar'], $tu['display_name']) ?>" class="av32">
+          <div style="display:flex;align-items:center;gap:8px">
+            <img src="<?= avatarSrc($au['avatar'], $au['display_name']) ?>" style="width:32px;height:32px;border-radius:50%;object-fit:cover">
             <div>
-              <a href="?page=profile&id=<?= $tu['id'] ?>"><?= h($tu['display_name']) ?></a>
-              <?= userBadges($tu) ?>
-              <div style="font-size:11px;color:var(--sub)">@<?= h($tu['username']) ?> &middot; <?= h($tu['email']) ?></div>
+              <div style="font-weight:500"><?= h($au['display_name']) ?> <?= (int)($au['suspended']??0)?'<span class="rb-suspended">Suspended</span>':'' ?></div>
+              <div style="font-size:11px;color:var(--sub)">@<?= h($au['username']) ?> &middot; <?= h($au['email']) ?></div>
             </div>
           </div>
         </td>
-        <td><span class="role-badge <?= $tu['role']==='admin'?'rb-admin':'rb-user' ?>"><?= $tu['role'] ?></span></td>
-        <td style="font-size:12px;color:var(--sub)"><?= $tu['last_login'] ? timeAgo($tu['last_login']) : 'Never' ?></td>
-        <td>
-          <?php if ($susp): ?>
-          <span style="font-size:11px;background:#fce8e6;color:#c5221f;border-radius:10px;padding:2px 8px;font-weight:700">Suspended</span>
-          <?php if ($tu['suspended_until']): ?><div style="font-size:10px;color:var(--sub);margin-top:2px">Until <?= date('M j', strtotime($tu['suspended_until'])) ?></div><?php endif; ?>
-          <?php else: ?>
-          <span style="font-size:11px;background:#e6f4ea;color:#137333;border-radius:10px;padding:2px 8px;font-weight:700">Active</span>
-          <?php endif; ?>
-        </td>
+        <td><span class="role-badge <?= $au['role']==='admin'?'rb-admin':'rb-user' ?>"><?= h($au['role']) ?></span></td>
+        <td><?= date('M j, Y', strtotime($au['created_at'])) ?></td>
         <td>
           <div style="display:flex;gap:5px;flex-wrap:wrap">
-            <?php if ($tu['id'] != $u['id']): ?>
-            <form method="post" style="display:inline"><input type="hidden" name="action" value="admin_toggle_role"><input type="hidden" name="user_id" value="<?= $tu['id'] ?>"><button class="gbtn gbtn-outline gbtn-sm" style="font-size:11px"><?= $tu['role']==='admin'?'Demote':'Make Admin' ?></button></form>
-            <?php if ($susp): ?>
-            <form method="post" style="display:inline"><input type="hidden" name="action" value="admin_unsuspend_user"><input type="hidden" name="user_id" value="<?= $tu['id'] ?>"><button class="gbtn gbtn-outline gbtn-sm" style="font-size:11px;background:#e6f4ea;color:#137333;border-color:#0f9d58">Unsuspend</button></form>
-            <?php else: ?>
-            <button class="gbtn gbtn-sm" style="font-size:11px;background:#fff3e0;color:#e65100;border:1px solid #ffb74d" onclick="openSuspendForm(<?= $tu['id'] ?>)">Suspend</button>
-            <?php endif; ?>
-            <form method="post" style="display:inline" onsubmit="return confirm('Delete <?= h(addslashes($tu['display_name'])) ?>?')"><input type="hidden" name="action" value="admin_delete_user"><input type="hidden" name="user_id" value="<?= $tu['id'] ?>"><button class="gbtn gbtn-red gbtn-sm" style="font-size:11px">Delete</button></form>
-            <?php else: ?>
-            <span style="font-size:11px;color:var(--sub)">You</span>
+            <a href="?page=profile&id=<?= $au['id'] ?>" class="gbtn gbtn-outline gbtn-sm">View</a>
+            <?php if ($au['id'] != $u['id']): ?>
+              <?php if (!(int)($au['suspended']??0)): ?>
+              <button onclick="document.getElementById('sf-<?= $au['id'] ?>').classList.toggle('open')" class="gbtn gbtn-sm" style="background:#fff8e1;color:#7a5c00;border:1px solid #f4b400">Suspend</button>
+              <?php else: ?>
+              <form method="post" style="margin:0"><input type="hidden" name="action" value="admin_unsuspend_user"><input type="hidden" name="uid" value="<?= $au['id'] ?>"><button class="gbtn gbtn-outline gbtn-sm">Unsuspend</button></form>
+              <?php endif; ?>
+              <?php if (!(int)($au['early_access']??0)): ?>
+              <form method="post" style="margin:0"><input type="hidden" name="action" value="admin_grant_ea"><input type="hidden" name="uid" value="<?= $au['id'] ?>"><button class="gbtn gbtn-gold gbtn-sm">&#9889; EA</button></form>
+              <?php endif; ?>
+              <form method="post" style="margin:0" onsubmit="return confirm('Delete this user permanently?')"><input type="hidden" name="action" value="admin_delete_user"><input type="hidden" name="uid" value="<?= $au['id'] ?>"><button class="gbtn gbtn-red gbtn-sm">Delete</button></form>
             <?php endif; ?>
           </div>
-          <div class="suspend-form-wrap" id="suspend-form-<?= $tu['id'] ?>">
-            <form method="post">
+          <?php if ($au['id'] != $u['id']): ?>
+          <div class="suspend-form-wrap" id="sf-<?= $au['id'] ?>">
+            <form method="post" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
               <input type="hidden" name="action" value="admin_suspend_user">
-              <input type="hidden" name="user_id" value="<?= $tu['id'] ?>">
-              <div style="margin-bottom:8px"><input type="text" name="suspend_reason" placeholder="Reason for suspension…" style="width:100%;padding:6px 9px;border:1px solid #ddd;border-radius:2px;font-size:12px;outline:none" required></div>
-              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-                <select name="suspend_type" id="stype-<?= $tu['id'] ?>" onchange="document.getElementById('sdays-<?= $tu['id'] ?>').style.display=this.value==='temporary'?'block':'none'" style="font-size:12px;padding:5px;border:1px solid #ddd;border-radius:2px">
-                  <option value="permanent">Permanent</option>
-                  <option value="temporary">Temporary</option>
-                </select>
-                <input type="number" name="suspend_days" id="sdays-<?= $tu['id'] ?>" value="3" min="1" max="365" style="width:70px;padding:5px;border:1px solid #ddd;border-radius:2px;font-size:12px;display:none"> days
-                <button class="gbtn gbtn-red gbtn-sm" type="submit">Confirm</button>
-                <button type="button" class="gbtn gbtn-outline gbtn-sm" onclick="document.getElementById('suspend-form-<?= $tu['id'] ?>').classList.remove('open')">Cancel</button>
-              </div>
+              <input type="hidden" name="uid" value="<?= $au['id'] ?>">
+              <div style="flex:1;min-width:160px"><label style="font-size:11px;color:var(--sub);display:block;margin-bottom:3px">Reason</label><input type="text" name="reason" placeholder="Reason for suspension" style="width:100%;padding:7px;border:1px solid #ddd;border-radius:2px;font-size:13px;outline:none"></div>
+              <div><label style="font-size:11px;color:var(--sub);display:block;margin-bottom:3px">Until (optional)</label><input type="datetime-local" name="until" style="padding:7px;border:1px solid #ddd;border-radius:2px;font-size:13px;outline:none"></div>
+              <button class="gbtn gbtn-red gbtn-sm">Confirm Suspend</button>
             </form>
           </div>
+          <?php endif; ?>
         </td>
       </tr>
       <?php endforeach; ?>
@@ -3047,114 +2972,146 @@ if (cw) cw.scrollTop = cw.scrollHeight;
     </table>
   </div>
 
-  <?php elseif ($adminTab === 'settings'): ?>
-  <div class="gcard" style="padding:24px">
-    <div class="ea-panel <?= $earlyAccess?'ea-panel-on':'' ?>" style="margin-bottom:20px">
-      <div class="ea-header">
-        <div><div class="ea-title">&#9889; Early Access Mode</div><div class="ea-desc">When on, new registrations are disabled. Useful while the site is growing.</div></div>
-        <span class="ea-status <?= $earlyAccess?'ea-on':'ea-off' ?>"><?= $earlyAccess?'ON':'OFF' ?></span>
-        <form method="post"><input type="hidden" name="action" value="admin_toggle_early_access"><button class="gbtn <?= $earlyAccess?'gbtn-outline':'gbtn-gold' ?> gbtn-sm"><?= $earlyAccess?'Disable':'Enable' ?></button></form>
-      </div>
-    </div>
-    <div class="maint-panel <?= $maintenanceMode?'maint-panel-on':'' ?>" style="margin-bottom:20px">
-      <div class="ea-header">
-        <div><div class="maint-title">&#128737; Maintenance Mode</div><div class="maint-desc">When on, only admins can access the site. Everyone else sees a holding page.</div></div>
-        <span class="ea-status <?= $maintenanceMode?'maint-on':'maint-off' ?>"><?= $maintenanceMode?'ON':'OFF' ?></span>
-        <form method="post"><input type="hidden" name="action" value="admin_toggle_maintenance"><button class="gbtn <?= $maintenanceMode?'gbtn-outline':'gbtn-red' ?> gbtn-sm"><?= $maintenanceMode?'Disable':'Enable' ?></button></form>
-      </div>
-    </div>
-    <h3 style="font-size:15px;font-weight:500;margin:0 0 16px">Other Actions</h3>
-    <form method="post" onsubmit="return confirm('Clear all base64 images from the database?')"><input type="hidden" name="action" value="admin_clear_base64"><button class="gbtn gbtn-outline gbtn-sm">Clear Old Base64 Images</button></form>
+  <?php elseif ($adminTab === 'posts'): ?>
+  <div class="gcard">
+    <table class="admin-table">
+      <thead><tr><th>Author</th><th>Content</th><th>Date</th><th></th></tr></thead>
+      <tbody>
+      <?php $postsAll = getDB()->query("SELECT p.*,u.display_name FROM posts p JOIN users u ON u.id=p.user_id ORDER BY p.created_at DESC LIMIT 60")->fetchAll(); foreach ($postsAll as $ap): ?>
+      <tr>
+        <td><?= h($ap['display_name']) ?></td>
+        <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><?= h(substr($ap['content'],0,80)) ?></td>
+        <td style="white-space:nowrap"><?= date('M j, Y', strtotime($ap['created_at'])) ?></td>
+        <td><form method="post" style="margin:0" onsubmit="return confirm('Delete this post?')"><input type="hidden" name="action" value="admin_delete_post"><input type="hidden" name="pid" value="<?= $ap['id'] ?>"><button class="gbtn gbtn-red gbtn-sm">Delete</button></form></td>
+      </tr>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
   </div>
 
-  <?php elseif ($adminTab === 'create'): ?>
-  <div class="gcard" style="padding:24px;max-width:480px">
-    <h3 style="margin:0 0 20px;font-size:16px;font-weight:500">Create a User Account</h3>
-    <form method="post">
-      <input type="hidden" name="action" value="admin_create_user">
-      <div class="form-group"><label>Display Name</label><input type="text" name="display_name" required></div>
-      <div class="form-group"><label>Username</label><input type="text" name="username" pattern="[a-zA-Z0-9_]{3,}" required></div>
-      <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
-      <div class="form-group"><label>Password</label><input type="password" name="password" minlength="6" required></div>
-      <button class="gbtn gbtn-blue" type="submit">Create User</button>
-    </form>
+  <?php elseif ($adminTab === 'settings'): ?>
+  <div class="ea-panel <?= $eaMode ? 'ea-panel-on' : '' ?>" style="margin-bottom:14px">
+    <div class="ea-header">
+      <div>
+        <div class="ea-title">&#9889; Early Access Mode</div>
+        <div class="ea-desc">When on, new user registration is disabled. Only admins can create accounts.</div>
+      </div>
+      <form method="post" style="margin:0">
+        <input type="hidden" name="action" value="admin_toggle_ea">
+        <button class="gbtn gbtn-sm <?= $eaMode ? 'gbtn-red' : 'gbtn-blue' ?>"><?= $eaMode ? 'Disable' : 'Enable' ?></button>
+      </form>
+    </div>
+  </div>
+  <div class="maint-panel <?= $maintMode ? 'maint-panel-on' : '' ?>">
+    <div class="ea-header">
+      <div>
+        <div class="maint-title">&#128737; Maintenance Mode</div>
+        <div class="maint-desc">When on, only admins can sign in. Other users see a maintenance message.</div>
+      </div>
+      <form method="post" style="margin:0">
+        <input type="hidden" name="action" value="admin_toggle_maint">
+        <button class="gbtn gbtn-sm <?= $maintMode ? 'gbtn-blue' : 'gbtn-red' ?>"><?= $maintMode ? 'Disable' : 'Enable' ?></button>
+      </form>
+    </div>
   </div>
   <?php endif; ?>
 </div>
 
-<?php else: // anything unrecognised goes to home ?>
-<?php redirect('?page=home'); ?>
-<?php endif; // end page routing ?>
+<?php
+// Fallback - redirect home
+else:
+  redirect('?page=home');
+endif;
 
-<div id="ripples-modal-bg" class="ripples-modal-bg">
+END_OUTPUT:
+?>
+
+<div id="ripplesModalBg" class="ripples-modal-bg" onclick="if(event.target===this)closeRipples()">
   <div class="ripples-modal">
     <div class="ripples-modal-header">
-      <h3>&#9711; Ripples <span id="ripplesTitle" style="font-size:13px;opacity:.5;margin-left:6px"></span></h3>
+      <h3>&#9728; Ripples</h3>
       <button class="ripples-close" onclick="closeRipples()">&#215;</button>
     </div>
-    <div class="ripples-canvas-wrap"><canvas id="ripplesCanvas"></canvas></div>
-    <div class="ripples-footer"><span class="ripples-stat" id="ripplesStat">Loading…</span><span style="font-size:11px;opacity:.3">Drag to rotate</span></div>
+    <div class="ripples-canvas-wrap">
+      <canvas id="ripplesCanvas"></canvas>
+    </div>
+    <div class="ripples-footer">
+      <span>Drag to rotate &bull; Hover for details</span>
+      <span class="ripples-stat" id="ripplesStat"></span>
+    </div>
   </div>
 </div>
-
-<?php if (!in_array($page, ['login','register','suspended','circles'])): ?>
-<footer id="site-footer">
-  <div>
-    <a href="?page=about"><?= SITE_NAME ?></a> &middot;
-    <a href="?page=tos">Terms</a> &middot;
-    <a href="?page=privacy">Privacy</a> &middot;
-    <a href="?page=guidelines">Guidelines</a> &middot;
-    <a href="<?= GITHUB_URL ?>" target="_blank" class="oss-badge" style="vertical-align:middle">&#128196; GitHub</a>
-  </div>
-  <div>v<?= VERSION ?> &middot; MIT License &middot; Open Source</div>
-</footer>
-<?php endif; ?>
-
+<div class="hz-toast" id="main-toast"></div>
 <script>
-// ---- global JS ----
+// ---- GLOBAL JS ----
 
+function mainToast(msg) {
+  var t = document.getElementById('main-toast');
+  if (!t) return;
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._timer); t._timer = setTimeout(function() { t.classList.remove('show'); }, 2800);
+}
+
+// plusOne handler
 function plusOne(pid, btn) {
   fetch(location.pathname, {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: 'action=plusone&post_id=' + pid
-  }).then(r => r.json()).then(d => {
-    btn.querySelector('.poc').textContent = d.count;
-    btn.classList.toggle('plusoned');
+  }).then(r => r.json()).then(function(d) {
+    if (d.ok) {
+      btn.classList.toggle('plusoned', d.plusoned);
+      var poc = btn.querySelector('.poc');
+      if (poc) poc.textContent = d.count > 0 ? d.count : '';
+    }
   });
 }
 
+// toggle comments area
 function toggleCmts(pid) {
   var el = document.getElementById('cmts-' + pid);
   if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
-function toggleFollow(uid, btn) {
-  fetch(location.pathname, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: 'action=toggle_follow&followee_id=' + uid
-  }).then(r => r.json()).then(d => {
-    if (d.ok) btn.textContent = d.following ? 'Unfollow' : 'Follow';
-  });
-}
-
-// reshare popover
+// reshare popover - uses fixed positioning so it is never clipped
 var _rsOpen = null;
+
 function toggleResharePopover(pid, btn) {
   if (_rsOpen && _rsOpen.pid === pid) { closeResharePopovers(); return; }
   closeResharePopovers();
+
   var pop = document.createElement('div');
   pop.className = 'reshare-popover';
-  pop.innerHTML = '<div style="font-size:13px;font-weight:500;margin-bottom:8px;color:#333">Add a comment (optional)</div>'
-    + '<textarea id="rsComment-'+pid+'" placeholder="Say something about this…" rows="3"></textarea>'
+  pop.style.position = 'fixed';
+  pop.innerHTML =
+    '<div style="font-size:13px;font-weight:500;margin-bottom:8px;color:#333">Add a comment <span style="font-weight:400;color:var(--sub)">(optional)</span></div>'
+    + '<textarea id="rsComment-' + pid + '" placeholder="Say something about this\u2026" rows="3"></textarea>'
     + '<div class="reshare-popover-actions">'
     + '<button class="gbtn gbtn-outline gbtn-sm" onclick="closeResharePopovers()">Cancel</button>'
-    + '<button class="gbtn gbtn-blue gbtn-sm" onclick="doReshare('+pid+')">Reshare</button>'
+    + '<button class="gbtn gbtn-blue gbtn-sm" onclick="doReshare(' + pid + ')">Reshare</button>'
     + '</div>';
-  btn.parentElement.appendChild(pop);
-  _rsOpen = {pid: pid, pop: pop};
-  setTimeout(() => pop.querySelector('textarea').focus(), 50);
+
+  document.body.appendChild(pop);
+
+  var rect = btn.getBoundingClientRect();
+  var popW = 300, popH = 180;
+  var left = rect.left;
+  var top  = rect.bottom + 6;
+
+  if (left + popW > window.innerWidth - 8)  left = window.innerWidth - popW - 8;
+  if (top + popH > window.innerHeight - 8)  top  = rect.top - popH - 6;
+  if (left < 8) left = 8;
+
+  pop.style.left  = Math.round(left) + 'px';
+  pop.style.top   = Math.round(top)  + 'px';
+  pop.style.width = popW + 'px';
+  pop.style.zIndex = '500';
+
+  _rsOpen = { pid: pid, pop: pop };
+  setTimeout(function() {
+    var ta = document.getElementById('rsComment-' + pid);
+    if (ta) ta.focus();
+  }, 50);
 }
 
 function closeResharePopovers() {
@@ -3162,149 +3119,243 @@ function closeResharePopovers() {
 }
 
 function doReshare(pid) {
-  var comment = (document.getElementById('rsComment-'+pid) || {}).value || '';
+  var ta = document.getElementById('rsComment-' + pid);
+  var comment = ta ? ta.value : '';
   fetch(location.pathname, {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: 'action=reshare&post_id='+pid+'&comment='+encodeURIComponent(comment)
-  }).then(r => r.json()).then(d => {
+    body: 'action=reshare&post_id=' + pid + '&comment=' + encodeURIComponent(comment)
+  }).then(r => r.json()).then(function(d) {
     if (d.ok) {
-      var cnt = document.getElementById('rsc-'+pid);
+      var cnt = document.getElementById('rsc-' + pid);
       if (cnt) cnt.textContent = d.count > 0 ? d.count : '';
-      var rsBtn = document.getElementById('rsBtn-'+pid);
+      var rsBtn = document.getElementById('rsBtn-' + pid);
       if (rsBtn) rsBtn.classList.toggle('reshared', !d.undone);
       closeResharePopovers();
     }
   });
 }
 
-document.addEventListener('click', e => {
-  if (_rsOpen && !e.target.closest('.reshare-popover') && !e.target.closest('.pbar-btn')) closeResharePopovers();
+document.addEventListener('click', function(e) {
+  if (_rsOpen && !e.target.closest('.reshare-popover') && !e.target.closest('.pbar-btn')) {
+    closeResharePopovers();
+  }
 });
 
-// ripples visualizer
-var _ripplesData = null;
+// ---- FIX 1: ripples modal with drag-to-rotate ----
+var _ripplesPostId   = null;
+var _ripplesData     = null;
+var _ripplesAngle    = 0;
+var _ripplesDrag     = null;
+var _avatarCache     = {};
+
 function openRipples(pid) {
-  document.getElementById('ripples-modal-bg').classList.add('open');
-  document.getElementById('ripplesStat').textContent = 'Loading…';
-  document.getElementById('ripplesTitle').textContent = '';
-  fetch(location.pathname + '?action=ripples&post_id=' + pid, {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:'action=ripples'})
-    .then(r => r.json()).then(data => {
-      _ripplesData = data;
-      document.getElementById('ripplesStat').textContent = data.total + ' reshare' + (data.total!==1?'s':'');
-      drawRipples(data);
-    }).catch(() => document.getElementById('ripplesStat').textContent = 'Could not load');
-  // actually use GET
-  fetch('?action=ripples&post_id=' + pid)
-    .then(r => r.json()).then(data => {
-      _ripplesData = data;
-      document.getElementById('ripplesStat').textContent = data.total + ' reshare' + (data.total!==1?'s':'');
-      drawRipples(data);
-    }).catch(() => {});
+  _ripplesPostId = pid;
+  document.getElementById('ripplesModalBg').classList.add('open');
+  document.getElementById('ripplesStat').textContent = 'Loading\u2026';
+  fetch(location.pathname, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: 'action=get_ripples&post_id=' + pid
+  }).then(r => r.json()).then(function(d) {
+    if (d.ok) {
+      _ripplesData  = d.data;
+      _ripplesAngle = 0;
+      document.getElementById('ripplesStat').textContent = d.data.length + ' interaction' + (d.data.length !== 1 ? 's' : '');
+      _preloadRipplesAvatars(d.data, function() { drawRipples(); });
+    }
+  });
 }
 
-function closeRipples() { document.getElementById('ripples-modal-bg').classList.remove('open'); }
+function closeRipples() {
+  document.getElementById('ripplesModalBg').classList.remove('open');
+  _ripplesData = null; _ripplesPostId = null;
+}
 
-function drawRipples(data) {
+function _preloadRipplesAvatars(nodes, cb) {
+  var pending = 0;
+  nodes.forEach(function(n) {
+    if (n.avatar && !_avatarCache[n.avatar]) {
+      pending++;
+      var img = new Image();
+      img.onload = img.onerror = function() {
+        _avatarCache[n.avatar] = img;
+        if (--pending === 0) cb();
+      };
+      img.src = n.avatar;
+    }
+  });
+  if (pending === 0) cb();
+}
+
+function getAngleFromCenter(canvas, e) {
+  var rect = canvas.getBoundingClientRect();
+  var cx = rect.left + rect.width / 2;
+  var cy = rect.top  + rect.height / 2;
+  var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return Math.atan2(clientY - cy, clientX - cx);
+}
+
+function drawRipples() {
   var canvas = document.getElementById('ripplesCanvas');
-  var wrap   = canvas.parentElement;
+  if (!canvas || !_ripplesData) return;
+  var wrap = canvas.parentElement;
   canvas.width  = wrap.clientWidth  || 680;
   canvas.height = wrap.clientHeight || 360;
   var ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  var W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
 
-  if (!data.nodes || data.nodes.length === 0) {
+  var cx = W / 2, cy = H / 2;
+  var nodes = _ripplesData;
+  var count = nodes.length;
+  if (count === 0) {
     ctx.fillStyle = 'rgba(255,255,255,.3)';
-    ctx.font = '14px Roboto,sans-serif';
+    ctx.font = '14px Roboto, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('No reshares yet', canvas.width/2, canvas.height/2);
+    ctx.fillText('No interactions yet', cx, cy);
     return;
   }
 
-  var cx = canvas.width/2, cy = canvas.height/2;
-  var r1 = 40, r2 = Math.min(cx, cy) - 60;
+  var maxR = Math.min(W, H) / 2 - 50;
+  var rings = Math.max(2, Math.ceil(Math.log2(count + 1)));
 
   // draw rings
-  [r2, r2*0.6, r2*0.3].forEach((r, i) => {
+  for (var r = 1; r <= rings; r++) {
     ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, Math.PI*2);
-    ctx.strokeStyle = 'rgba(255,255,255,' + (0.06 + i*0.04) + ')';
+    ctx.arc(cx, cy, maxR * r / rings, 0, 2 * Math.PI);
+    ctx.strokeStyle = 'rgba(255,255,255,' + (0.04 + r * 0.03) + ')';
+    ctx.setLineDash([4, 6]);
     ctx.lineWidth = 1;
     ctx.stroke();
-  });
+    ctx.setLineDash([]);
+  }
 
-  // root node
-  var root = data.nodes[0];
+  // draw center node
   ctx.beginPath();
-  ctx.arc(cx, cy, r1, 0, Math.PI*2);
+  ctx.arc(cx, cy, 18, 0, 2 * Math.PI);
   ctx.fillStyle = '#4285f4';
   ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.7)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
   ctx.fillStyle = '#fff';
-  ctx.font = 'bold 13px Roboto,sans-serif';
+  ctx.font = 'bold 11px Roboto, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText((root.name||'?')[0].toUpperCase(), cx, cy);
+  ctx.fillText('POST', cx, cy);
 
-  // reshare nodes
-  data.nodes.slice(1).forEach(function(node, i) {
-    var angle  = (2*Math.PI * i / Math.max(data.nodes.length-1, 1)) - Math.PI/2;
-    var nx     = cx + r2 * Math.cos(angle);
-    var ny     = cy + r2 * Math.sin(angle);
-    // connector
+  // draw interaction nodes
+  nodes.forEach(function(node, i) {
+    var baseAngle = (2 * Math.PI * i / count);
+    var angle = baseAngle + _ripplesAngle - Math.PI / 2;
+    var ring  = Math.min(rings, Math.ceil((i + 1) / Math.max(1, Math.ceil(count / rings))));
+    var dist  = maxR * ring / rings;
+    var nx = cx + dist * Math.cos(angle);
+    var ny = cy + dist * Math.sin(angle);
+    var av = _avatarCache[node.avatar] || null;
+    var r  = 16;
+
+    // line from center
     ctx.beginPath();
     ctx.moveTo(cx, cy);
     ctx.lineTo(nx, ny);
     ctx.strokeStyle = 'rgba(255,255,255,.12)';
     ctx.lineWidth = 1;
     ctx.stroke();
-    // dot
+
+    // avatar circle
+    ctx.save();
     ctx.beginPath();
-    ctx.arc(nx, ny, 22, 0, Math.PI*2);
-    ctx.fillStyle = '#dd4b39';
-    ctx.fill();
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px Roboto,sans-serif';
+    ctx.arc(nx, ny, r, 0, 2 * Math.PI);
+    ctx.clip();
+    if (av && av.complete && av.naturalWidth) {
+      ctx.drawImage(av, nx - r, ny - r, r * 2, r * 2);
+    } else {
+      ctx.fillStyle = '#5a6a7a';
+      ctx.fillRect(nx - r, ny - r, r * 2, r * 2);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText((node.display_name || '?')[0].toUpperCase(), nx, ny);
+    }
+    ctx.restore();
+
+    // Border
+    ctx.beginPath();
+    ctx.arc(nx, ny, r, 0, 2 * Math.PI);
+    ctx.strokeStyle = node.type === 'plusone' ? '#dd4b39' : node.type === 'reshare' ? '#4285f4' : '#0f9d58';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // label
+    ctx.fillStyle = 'rgba(255,255,255,.65)';
+    ctx.font = '9px Roboto, sans-serif';
     ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText((node.name||'?')[0].toUpperCase(), nx, ny);
+    ctx.textBaseline = 'top';
+    ctx.fillText((node.display_name || '').split(' ')[0].substring(0, 8), nx, ny + r + 3);
   });
 }
 
-// icon/color pickers for create/edit community modals
-function selectIcon(ico, el) {
-  document.querySelectorAll('.icon-opt').forEach(e => e.classList.remove('sel'));
-  el.classList.add('sel');
-  var inp = document.getElementById('iconVal');
-  if (inp) inp.value = ico;
-}
-function selectCommColor(col, el) {
-  document.querySelectorAll('.cswatch').forEach(e => e.style.borderColor = 'transparent');
-  el.style.borderColor = '#333';
-  var inp = document.getElementById('commColorVal');
-  if (inp) inp.value = col;
-}
-function previewIconImg(e) {
-  var file = e.target.files[0];
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    var prev = document.getElementById('iconImgPreview');
-    if (prev) prev.innerHTML = '<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%">';
-  };
-  reader.readAsDataURL(file);
-}
-function openSuspendForm(uid) {
-  document.getElementById('suspend-form-' + uid).classList.toggle('open');
-}
+// drag-to-rotate for ripples canvas
+var ripplesCanvas = document.getElementById('ripplesCanvas');
 
-// image preview in composer
+ripplesCanvas.addEventListener('mousedown', function(e) {
+  var angle = getAngleFromCenter(ripplesCanvas, e);
+  _ripplesDrag = { startAngle: angle, startRot: _ripplesAngle };
+  ripplesCanvas.style.cursor = 'grabbing';
+});
+
+document.addEventListener('mousemove', function(e) {
+  if (!_ripplesDrag) return;
+  var angle = getAngleFromCenter(ripplesCanvas, e);
+  _ripplesAngle = _ripplesDrag.startRot + (angle - _ripplesDrag.startAngle);
+  drawRipples();
+});
+
+document.addEventListener('mouseup', function() {
+  _ripplesDrag = null;
+  ripplesCanvas.style.cursor = 'grab';
+});
+
+ripplesCanvas.addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  var angle = getAngleFromCenter(ripplesCanvas, e);
+  _ripplesDrag = { startAngle: angle, startRot: _ripplesAngle };
+}, {passive: false});
+
+ripplesCanvas.addEventListener('touchmove', function(e) {
+  e.preventDefault();
+  if (!_ripplesDrag) return;
+  var angle = getAngleFromCenter(ripplesCanvas, e);
+  _ripplesAngle = _ripplesDrag.startRot + (angle - _ripplesDrag.startAngle);
+  drawRipples();
+}, {passive: false});
+
+ripplesCanvas.addEventListener('touchend', function() { _ripplesDrag = null; });
+ripplesCanvas.style.cursor = 'grab';
+
+window.addEventListener('resize', function() { if (_ripplesData) drawRipples(); });
+
+// image picker label
 var imgPick = document.getElementById('imgPick');
-var imgLabel = document.getElementById('imgLabel');
-if (imgPick && imgLabel) {
+if (imgPick) {
   imgPick.addEventListener('change', function() {
-    imgLabel.textContent = this.files[0] ? this.files[0].name : '';
+    var lbl = document.getElementById('imgLabel');
+    if (lbl) lbl.textContent = this.files[0] ? this.files[0].name : '';
   });
 }
 </script>
+
+<div id="site-footer">
+  <a href="?page=about"><?= SITE_NAME ?></a> &middot;
+  <a href="?page=tos">Terms</a> &middot;
+  <a href="?page=privacy">Privacy</a> &middot;
+  <a href="?page=guidelines">Guidelines</a> &middot;
+  <a href="<?= GITHUB_URL ?>" target="_blank">GitHub</a>
+  <br><?= SITE_NAME ?> v<?= VERSION ?> &copy; <?= date('Y') ?>
+</div>
 </body>
 </html>
